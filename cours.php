@@ -95,7 +95,6 @@
         <div class="hero-container container">
             <div>
                 <h1 class="hero-title">Mes cours BTS SIO</h1>
-                <p class="hero-subtitle">Ajoute ici plus tard des liens vers GitHub et les ressources de chaque cours</p>
             </div>
             <div class="hero-image">
                 <div class="code-animation" style="width:180px;height:100px;">
@@ -115,37 +114,30 @@
             </div>
 
             <div style="display:flex;gap:1rem;align-items:center;">
-                <a href="#" id="github-link" class="btn btn-secondary">Mon GitHub (à ajouter)</a>
+                <a href="https://github.com/tferrand71" id="github-link" class="btn btn-secondary">Mon GitHub</a>
             </div>
         </div>
 
         <section id="year-2" class="course-list active">
             <div class="course-item">
-                <h3>Programmation Web - 2ème année</h3>
-                <p>Principes avancés en HTML/CSS, JavaScript, interaction avec APIs et notions de sécurité web.</p>
+                <h3>Programmation Web</h3>
+                <p>Principes avancés en HTML/CSS, JavaScript et notions de sécurité web.</p>
             </div>
-            <div class="course-item">
-                <h3>Base de données - 2ème année</h3>
+            <a class="course-item">
+                <h3>Base de données</h3>
                 <p>Conception de schémas, SQL avancé, optimisation des requêtes, transactions et intégrité.</p>
-            </div>
-            <div class="course-item">
-                <h3>Projet tuteuré - 2ème année</h3>
-                <p>Travail en équipe, gestion de projet, mise en production et documentation technique.</p>
+                <a href=""</a>
             </div>
         </section>
 
         <section id="year-1" class="course-list">
             <div class="course-item">
-                <h3>Algorithmique & Programmation - 1ère année</h3>
+                <h3>Algorithmique & Programmation (python)</h3>
                 <p>Bases de la programmation, structures de contrôle, fonctions, structures de données simples.</p>
             </div>
             <div class="course-item">
-                <h3>Systèmes & Réseaux - 1ère année</h3>
+                <h3>Systèmes & Réseaux</h3>
                 <p>Notions de systèmes d'exploitation, réseaux locaux, configuration de base et diagnostic.</p>
-            </div>
-            <div class="course-item">
-                <h3>Analyse & Conception - 1ère année</h3>
-                <p>Modélisation UML, analyse des besoins et rédaction de cahiers des charges.</p>
             </div>
         </section>
     </main>
@@ -177,10 +169,6 @@
             buttons.forEach(btn => {
                 btn.addEventListener('click', ()=> setYear(btn.getAttribute('data-year')));
             });
-
-            // Option: mettre à jour le lien GitHub facilement
-            const gh = document.getElementById('github-link');
-            // gh.href = 'https://github.com/ton-nom'; // décommente et modifie plus tard
         })();
     </script>
 
