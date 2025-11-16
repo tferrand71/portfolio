@@ -114,28 +114,28 @@
                     <div class="skill-item">
                         <div class="skill-info">
                             <span>HTML5</span>
-                            <span>75%</span>
+                            <span>95%</span>
                         </div>
                         <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
+                            <div class="skill-progress" data-width="95"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <div class="skill-info">
                             <span>CSS3</span>
-                            <span>75%</span>
+                            <span>90%</span>
                         </div>
                         <div class="skill-bar">
-                            <div class="skill-progress" data-width="75"></div>
+                            <div class="skill-progress" data-width="90"></div>
                         </div>
                     </div>
                     <div class="skill-item">
                         <div class="skill-info">
                             <span>JavaScript</span>
-                            <span>25%</span>
+                            <span>45%</span>
                         </div>
                         <div class="skill-bar">
-                            <div class="skill-progress" data-width="25"></div>
+                            <div class="skill-progress" data-width="45"></div>
                         </div>
                     </div>
                 </div>
@@ -243,14 +243,12 @@
                     </div>
                     <div class="project-content">
                         <span class="project-tag">À venir</span>
-                        <h3>Projets JavaScript Avancés</h3>
+                        <h3>Projets JavaScript</h3>
                         <p>
-                            Développement de projets pour approfondir les connaissances en JavaScript moderne, 
-                            APIs, et frameworks frontend.
+                            Développement de projets pour approfondir les connaissances en JavaScript moderne.
                         </p>
                         <div class="project-tech">
-                            <span>JavaScript ES6+</span>
-                            <span>APIs</span>
+                            <span>JavaScript</span>
                             <span>Frameworks</span>
                         </div>
                     </div>
@@ -298,7 +296,7 @@
                             <span>Android Studio</span>
                             <span>Java</span>
                             <span>Interface mobile</span>
-                            <span>APIs Android</span>
+                            <span>Android</span>
                         </div>
                     </div>
                 </div>
@@ -314,8 +312,8 @@
                 <div class="contact-info">
                     <h3>Contactez-moi !</h3>
                     <p>
-                        N'hésitez pas à me contacter pour discuter de projets, d'opportunités de stage 
-                        ou simplement pour échanger sur les technologies de développement. Je suis toujours 
+                        N'hésitez pas à me contacter pour discuter de projets, d'opportunités de stage
+                        ou simplement pour échanger sur les technologies de développement. Je suis toujours
                         ouvert aux conseils et aux nouvelles opportunités d'apprentissage !
                     </p>
                     <div class="contact-items">
@@ -335,26 +333,57 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="contact-form">
-                    <form id="contact-form">
+
+                    <!-- FORMULAIRE AVEC ACTION -->
+                    <form id="contact-form" action="traitement_message.php" method="POST">
+
                         <div class="form-group">
                             <input type="text" id="name" name="name" placeholder="Votre nom" required>
                         </div>
+
                         <div class="form-group">
                             <input type="email" id="email" name="email" placeholder="Votre email" required>
                         </div>
+
                         <div class="form-group">
                             <input type="text" id="subject" name="subject" placeholder="Sujet" required>
                         </div>
+
                         <div class="form-group">
                             <textarea id="message" name="message" placeholder="Votre message" rows="5" required></textarea>
                         </div>
+
+                        <!-- Case RGPD stylée -->
+                        <div class="form-group rgpd-field">
+                            <label class="rgpd-label">
+                                <input type="checkbox" id="rgpd" name="rgpd" required>
+                                <span class="rgpd-custom"></span>
+                                J’accepte que mes informations soient utilisées uniquement pour permettre
+                                de traiter ma demande, conformément au RGPD.
+                            </label>
+                        </div>
+
                         <button type="submit" class="btn btn-primary">Envoyer le message</button>
                     </form>
+
+                    <!-- Mentions CNIL -->
+                    <p style="font-size: 12px; margin-top: 10px; color: #666;">
+                        Les informations recueillies via ce formulaire sont enregistrées afin de permettre
+                        le traitement de votre demande. Elles ne seront en aucun cas transmises à des tiers.
+                        Conformément au RGPD et à la loi Informatique et Libertés, vous disposez d’un droit
+                        d’accès, de rectification et de suppression de vos données.
+                        Pour exercer vos droits :
+                        <a href="mailto:contact@tobias-ferrand.ovh">contact@tobias-ferrand.ovh</a>.
+                    </p>
+
                 </div>
             </div>
         </div>
     </section>
+
+
 
     <!-- Footer -->
     <footer class="footer">
