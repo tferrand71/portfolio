@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Projets — Tobias Ferrand</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .projects-hero {
+            min-height: 36vh;
+            padding-top: 90px;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--bg-primary) 50%);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .project-card .project-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .small-meta {
+            display:flex;gap:0.5rem;align-items:center;margin-top:0.5rem;color:var(--text-secondary);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <a href="index.html">Portfolio</a>
+            </div>
+            <div class="nav-menu" id="nav-menu">
+                <a href="index.html#accueil" class="nav-link">Accueil</a>
+                <a href="veille.php" class="nav-link">Veille</a>
+                <a href="cours.php" class="nav-link">Cours</a>
+                <a href="projets.html" class="nav-link">Projets</a>
+                <a href="index.html#formation" class="nav-link">Formation</a>
+                <a href="index.html#contact" class="nav-link">Contact</a>
+            </div>
+            <div class="nav-toggle" id="nav-toggle">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <header class="projects-hero">
+        <div class="container">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+                <div>
+                    <h1 class="hero-title">Mes projets</h1>
+                    <p class="hero-subtitle">Projets réalisés pendant le BTS et en apprentissage personnel</p>
+                </div>
+                <div class="hero-image">
+                    <div class="code-animation" style="width:160px;height:90px;">
+                        <div class="code-line" style="width:60%"></div>
+                        <div class="code-line" style="width:40%"></div>
+                        <div class="code-line" style="width:70%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container" style="padding:3rem 0;">
+        <section>
+            <h2 class="section-title">Sélection de projets</h2>
+            <div class="projects-grid">
+                <!-- Exemple de projet: Clicker -->
+                <article class="project-card">
+                    <div class="project-image" style="background: linear-gradient(135deg, rgba(139,92,246,0.12), rgba(124,58,237,0.06)); display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-mouse-pointer" style="font-size:3rem;color:var(--primary-color);"></i>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-tag">Web</span>
+                        <h3>Clicker (mini-jeu)</h3>
+                        <p>Petit projet JavaScript pour s'entraîner : clicker qui compte les clics et gère améliorations.</p>
+                        <div class="small-meta">
+                            <span><i class="fas fa-code"></i> HTML / CSS / JS</span>
+                            <span><i class="fas fa-external-link-alt"></i></span>
+                        </div>
+                        <div style="margin-top:1rem;display:flex;gap:0.75rem;">
+                            <!-- Remplace le href par le chemin réel de ton clicker si besoin -->
+                            <a href="https://tferrand71.github.io/IDEAStorm/" target="_blank" class="btn btn-sm btn-primary">Ouvrir le Clicker</a>
+                            <a href="#" class="btn btn-sm btn-secondary">Voir le code (GitHub)</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Projet: Site Harmonie (existant) -->
+                <article class="project-card">
+                    <div class="project-image" style="background: url('') center/cover no-repeat; display:flex; align-items:center; justify-content:center;background:var(--bg-secondary);">
+                        <i class="fas fa-external-link-alt" style="font-size:2.5rem;color:var(--primary-color);"></i>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-tag">Site Web</span>
+                        <h3>Site de l'Harmonie d'Épehy</h3>
+                        <p>Site vitrine développé pour l'orchestre d'Épehy — présentation, événements et contact.</p>
+                        <div class="small-meta">
+                            <span><i class="fas fa-globe"></i> HTML / CSS</span>
+                        </div>
+                        <div style="margin-top:1rem;display:flex;gap:0.75rem;">
+                            <a href="https://harmonie-epehy.fr" target="_blank" class="btn btn-sm btn-primary">Voir le site</a>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card vide pour ajout futur -->
+                <article class="project-card">
+                    <div class="project-image" style="background: var(--bg-secondary);display:flex;align-items:center;justify-content:center;">
+                        <i class="fas fa-code" style="font-size:2.5rem;color:var(--primary-color);"></i>
+                    </div>
+                    <div class="project-content">
+                        <span class="project-tag">À venir</span>
+                        <h3>Autres projets</h3>
+                        <p>Tu peux ajouter ici d'autres projets et liens GitHub. Modifier les boutons pour pointer vers tes pages.</p>
+                        <div style="margin-top:1rem;display:flex;gap:0.75rem;">
+                            <a href="#" class="btn btn-sm btn-secondary">Ajouter lien</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <p style="margin:0;color:var(--text-light);">&copy; 2025 Tobias Ferrand</p>
+            <div class="footer-links">
+                <a href="https://harmonie-epehy.fr" target="_blank">Harmonie d'Épehy</a>
+                <a href="index.html#projets">Projets</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="./script.js"></script>
+</body>
+
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mes Projets - JavaScript/framework</title>
+</head>
+<body>
+
+</body>
+</html>
