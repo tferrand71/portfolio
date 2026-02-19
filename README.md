@@ -1,70 +1,38 @@
-# Getting Started with Create React App
+# 🌑 Tobias Ferrand - Portfolio Premium
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Ce dépôt contient le code source de mon portfolio personnel. L'objectif est de présenter mon parcours et mes projets avec une identité visuelle forte et une navigation fluide.
 
-## Available Scripts
+## 🚀 Site en ligne
+[tobias-ferrand.ovh](https://tobias-ferrand.ovh)
 
-In the project directory, you can run:
+## 🛠️ Stack Technique
 
-### `npm start`
+* **Framework :** [Next.js 15+](https://nextjs.org/) (App Router)
+* **Styling :** [Tailwind CSS](https://tailwindcss.com/)
+* **Animations :** [Framer Motion](https://www.framer.com/motion/)
+* **Icônes :** [React Icons](https://react-icons.github.io/react-icons/)
+* **Hébergement :** OVH (Mutualisé)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## ✨ Points clés du projet
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+* **Design Luxury :** Thème sombre, accents dorés et typographie serif.
+* **Logo Custom :** Logo TF avec glyphe musical et arrière-plan effet "Matrix".
+* **Architecture :** Pages statiques optimisées (`Static Export`).
+* **SEO :** Balises structurées et gestion des redirections propres.
 
-### `npm test`
+## 🏗️ Rappel Déploiement (OVH)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Pour mettre à jour le site sur le FTP :
 
-### `npm run build`
+1.  Générer les fichiers : `npm run build`
+2.  Transférer le contenu du dossier `/out` vers le dossier `/www` du serveur.
+3.  **Note cruciale :** Le fichier `.htaccess` doit être présent dans `/www` pour gérer le HTTPS et les routes sans `.html`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Configuration .htaccess actuelle :
+```apache
+Options -Indexes
+DirectoryIndex index.html
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]

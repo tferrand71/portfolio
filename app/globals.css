@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+    /* Nos couleurs personnalisées */
+    --color-rich-black: #0a0a0a;
+    --color-card-dark: #121212;
+    --color-luxury-gold: #D4AF37;
+    --color-luxury-gold-dim: #C5A028;
+
+    /* Notre effet d'ombre dorée */
+    --shadow-glow: 0 0 20px rgba(212, 175, 55, 0.15);
+
+    /* Nos polices (on les liera dans l'étape suivante) */
+    --font-serif: var(--font-playfair);
+    --font-sans: var(--font-inter);
+}
+
+/* Le style de base de la page */
+body {
+    background-color: var(--color-rich-black);
+    color: #ffffff;
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar classe */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-rich-black);
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-luxury-gold);
+}
