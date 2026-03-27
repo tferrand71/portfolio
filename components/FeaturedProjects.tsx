@@ -33,11 +33,8 @@ export default function FeaturedProjects() {
                         </div>
 
                         <div className="flex flex-col gap-3">
-                            <a href="https://tferrand71.github.io/IDEAStorm/" target="_blank" className="w-full py-2 bg-gray-800 hover:bg-gray-700 text-center rounded text-sm transition-colors">
+                            <a href="/ideastorm/index.html" target="_blank" className="w-full py-2 bg-gray-800 hover:bg-gray-700 text-center rounded text-sm transition-colors">
                                 Jouer sur le Web
-                            </a>
-                            <a href="/downloads/clicker.apk" download className="w-full py-2 bg-gradient-to-r from-luxury-gold to-yellow-600 text-black font-bold text-center rounded text-sm flex items-center justify-center gap-2 hover:brightness-110 transition-all">
-                                <FaGooglePlay /> Télécharger l'App
                             </a>
                         </div>
                     </motion.div>
@@ -57,7 +54,7 @@ export default function FeaturedProjects() {
                             </p>
                         </div>
 
-                        <a href="#" className="w-full py-2 border border-gray-600 hover:border-luxury-gold hover:text-luxury-gold text-center rounded text-sm flex items-center justify-center gap-2 transition-all">
+                        <a href="https://github.com/tferrand71/MakiApp.git" className="w-full py-2 border border-gray-600 hover:border-luxury-gold hover:text-luxury-gold text-center rounded text-sm flex items-center justify-center gap-2 transition-all">
                             <FaGithub /> Voir le repo
                         </a>
                     </motion.div>
@@ -73,7 +70,7 @@ export default function FeaturedProjects() {
                             </div>
                             <h3 className="text-xl font-serif text-white mb-2">Voir tous mes projets</h3>
                             <p className="text-center text-gray-500 text-sm group-hover:text-gray-300">
-                                Explorez l'intégralité de mon portfolio
+                                Explorez l'intégralité de mes projets
                             </p>
                         </motion.div>
                     </Link>

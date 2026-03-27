@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /dashboard/
+Disallow: /cache/
+Disallow: /PHPMailer/
+Allow: /
+
+Sitemap: https://www.harmonie-epehy.fr/sitemap.xml
+

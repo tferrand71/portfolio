@@ -1,0 +1,386 @@
+{
+  "kind": "youtube#searchListResponse",
+  "etag": "DPduaDSvQtNFj6jsKo2WjevJkDA",
+  "nextPageToken": "CAwQAA",
+  "regionCode": "FR",
+  "pageInfo": {
+    "totalResults": 686,
+    "resultsPerPage": 12
+  },
+  "items": [
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ZPjCGquoMOL7iutyZj7AyQwjzps",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "1wsBdYPtMLY"
+      },
+      "snippet": {
+        "publishedAt": "2023-03-27T23:30:12Z",
+        "channelId": "UCXRy-PANUy0MjohzMk6s6Bg",
+        "title": "Armenian Dances (Part I) - Alfred Reed - Orchestre d’Harmonie d’Epehy",
+        "description": "Armenian Dances (Part 1) d'Alfred Reed Orchestre d'Harmonie d'Epehy Direction: Julien Jacquemart Concert donné le 25 Mars ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/1wsBdYPtMLY/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/1wsBdYPtMLY/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/1wsBdYPtMLY/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "JULIEN JACQUEMART - Conductor",
+        "liveBroadcastContent": "none",
+        "publishTime": "2023-03-27T23:30:12Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "Bl96EdzseVTBcHc3jIjrL12Ua-A",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "pA8h7Brjp1c"
+      },
+      "snippet": {
+        "publishedAt": "2020-06-04T15:51:26Z",
+        "channelId": "UC_8RT93VcS3oR0qoz_oVkzg",
+        "title": "Orchestre d&#39;Harmonie d&#39;Epehy - Fantasy - Earth Wind &amp; Fire (2005)",
+        "description": "Extrait du documentaire \"En Avant la Musique...Harmonies le souffle du Nord\" de France 3 Nord Pas de Calais Picardie - Morgan ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/pA8h7Brjp1c/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/pA8h7Brjp1c/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/pA8h7Brjp1c/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Gilles Czwartkowski",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-06-04T15:51:26Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "lITQNLVmQfuE_B09AWllmIQqBBU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "eaTe8Za7x2M"
+      },
+      "snippet": {
+        "publishedAt": "2020-05-28T13:44:11Z",
+        "channelId": "UC_8RT93VcS3oR0qoz_oVkzg",
+        "title": "Orchestre d&#39;Harmonie d&#39;Epehy - Présentation du CD &quot;80740&quot;",
+        "description": "Orchestre d'Harmonie d'Epehy Direction : Gilles Czwartkowski CD anniversaire 1971-2011- 40 ans Programme : 1- Overture to a ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/eaTe8Za7x2M/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/eaTe8Za7x2M/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/eaTe8Za7x2M/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Gilles Czwartkowski",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-05-28T13:44:11Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "tTSEAgWJB_wy7lNza6Btbn_Qe4w",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "-eRiZtGJiZQ"
+      },
+      "snippet": {
+        "publishedAt": "2009-12-26T20:42:28Z",
+        "channelId": "UCBP5zjhxFurvABGHaYGi0Ig",
+        "title": "Orchestre d&#39;Harmonie D&#39;Epehy - Klezmer Classics",
+        "description": "L'Ohé interprète Klezmer Classics, une pièce composée par Johann De Meij. L'enregistrement s'est fait pour la finale de ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/-eRiZtGJiZQ/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/-eRiZtGJiZQ/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/-eRiZtGJiZQ/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "hikarilu",
+        "liveBroadcastContent": "none",
+        "publishTime": "2009-12-26T20:42:28Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "NRHx9yR_uyjQjZaW72HEwNzc1hk",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "Mk4cDAcG5WM"
+      },
+      "snippet": {
+        "publishedAt": "2007-07-02T23:07:27Z",
+        "channelId": "UCjHVB0s3ioKmgblsVMgcQnA",
+        "title": "Orchestre d&#39;harmonie d&#39;Epehy",
+        "description": "Epehy est le plus petit village à posséder un orchestre classé parmi les 30 meilleures formations musicales amateurs de France.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/Mk4cDAcG5WM/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/Mk4cDAcG5WM/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/Mk4cDAcG5WM/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "OHEpehy",
+        "liveBroadcastContent": "none",
+        "publishTime": "2007-07-02T23:07:27Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "zXUoqUw7D7QX3lRSUDSLDPGAZEs",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "ep-jhcjFTkA"
+      },
+      "snippet": {
+        "publishedAt": "2020-05-23T10:00:11Z",
+        "channelId": "UC_8RT93VcS3oR0qoz_oVkzg",
+        "title": "Orchestre d&#39;Harmonie d&#39;Epehy (80740)",
+        "description": "En sommeil depuis le 15 mars 2020, l'OHEpehy a annulé toutes ses répétitions et ses concerts jusque fin juin. Pour garder un ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/ep-jhcjFTkA/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/ep-jhcjFTkA/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/ep-jhcjFTkA/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Gilles Czwartkowski",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-05-23T10:00:11Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "8oBdwByhsjW7_iIDUYE8j_EM_vg",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "0NvGOcQbsZo"
+      },
+      "snippet": {
+        "publishedAt": "2020-05-26T14:06:38Z",
+        "channelId": "UC_8RT93VcS3oR0qoz_oVkzg",
+        "title": "Orchestre d&#39;Harmonie d&#39;Epehy - Extreme Make-over / Johan de Meij",
+        "description": "Oeuvre imposée en division d'Honneur au Concours National CMF du 11 mai 2008 à Strasbourg. Titre : Extreme Make-Over ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/0NvGOcQbsZo/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/0NvGOcQbsZo/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/0NvGOcQbsZo/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Gilles Czwartkowski",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-05-26T14:06:38Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "tR4s0HpPXL-E07aRw87YjnnIQG4",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "IevnkuaVHg4"
+      },
+      "snippet": {
+        "publishedAt": "2024-04-06T22:05:20Z",
+        "channelId": "UCXRy-PANUy0MjohzMk6s6Bg",
+        "title": "Aurora by Thomas Doss - Orchestre d&#39;Harmonie d&#39;Épehy",
+        "description": "Aurora by Thomas Doss Orchestre d'Harmonie d'Épehy Conductor: Gilles Czwartkowski Recorded 10th and 11th February 2007.",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/IevnkuaVHg4/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/IevnkuaVHg4/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/IevnkuaVHg4/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "JULIEN JACQUEMART - Conductor",
+        "liveBroadcastContent": "none",
+        "publishTime": "2024-04-06T22:05:20Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "jmfcq0tjfc1nk0ETadOGqdrFdgo",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "dcQBuWK34N8"
+      },
+      "snippet": {
+        "publishedAt": "2020-05-26T13:44:22Z",
+        "channelId": "UC_8RT93VcS3oR0qoz_oVkzg",
+        "title": "Orchestre d&#39;Harmonie d&#39;Epehy - Poème montagnard / jan Van der Roost",
+        "description": "Oeuvre au choix en division d'Honneur au Concours National CMF du 11 mai 2008 à Strasbourg. Titre : Poème Montagnard ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/dcQBuWK34N8/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/dcQBuWK34N8/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/dcQBuWK34N8/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "Gilles Czwartkowski",
+        "liveBroadcastContent": "none",
+        "publishTime": "2020-05-26T13:44:22Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "ldITe_ieE4Yx70CdD4_VDxOqPrU",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "3XsCeTCOr8g"
+      },
+      "snippet": {
+        "publishedAt": "2023-03-27T18:09:52Z",
+        "channelId": "UCXRy-PANUy0MjohzMk6s6Bg",
+        "title": "The Trombone Rag - John Higgins - Orchestre d’Harmonie d’Epehy",
+        "description": "The Trombone Rag by John Higgins Orchestre d'Harmonie d'Epehy & Qu4tre à 4 Direction: Julien Jacquemart Solistes: Thomas ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/3XsCeTCOr8g/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/3XsCeTCOr8g/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/3XsCeTCOr8g/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "JULIEN JACQUEMART - Conductor",
+        "liveBroadcastContent": "none",
+        "publishTime": "2023-03-27T18:09:52Z"
+      }
+    },
+    {
+      "kind": "youtube#searchResult",
+      "etag": "J_ZSUmCm7LCH1iM5U3KbIXG0zt8",
+      "id": {
+        "kind": "youtube#video",
+        "videoId": "hOljAdx0gfc"
+      },
+      "snippet": {
+        "publishedAt": "2023-03-27T23:27:05Z",
+        "channelId": "UCXRy-PANUy0MjohzMk6s6Bg",
+        "title": "Impressions - Robert Fienga - Qu4tre à 4 &amp; Orchestre d’Harmonie d’Epehy",
+        "description": "Impressions de Robert Fienga 1. No Stress 2. Suaves Tropiques 3. Bravura Création pour le quatuor de trombones Qu4tre à 4 et ...",
+        "thumbnails": {
+          "default": {
+            "url": "https://i.ytimg.com/vi/hOljAdx0gfc/default.jpg",
+            "width": 120,
+            "height": 90
+          },
+          "medium": {
+            "url": "https://i.ytimg.com/vi/hOljAdx0gfc/mqdefault.jpg",
+            "width": 320,
+            "height": 180
+          },
+          "high": {
+            "url": "https://i.ytimg.com/vi/hOljAdx0gfc/hqdefault.jpg",
+            "width": 480,
+            "height": 360
+          }
+        },
+        "channelTitle": "JULIEN JACQUEMART - Conductor",
+        "liveBroadcastContent": "none",
+        "publishTime": "2023-03-27T23:27:05Z"
+      }
+    }
+  ]
+}

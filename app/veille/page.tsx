@@ -10,36 +10,44 @@ import { FaExternalLinkAlt, FaCalendarAlt, FaTag, FaFilter } from "react-icons/f
 const articles = [
     {
         id: 1,
-        title: "L'évolution des pratiques de développement en 2025",
-        category: "Développement",
-        date: "15 Fév 2026",
-        source: "Stack Overflow Insights",
-        url: "https://insights.stackoverflow.com/",
-        summary: "Synthèse sur l'IA assistée (Copilot), le CI/CD moderne et l'architecture microservices. L'article souligne l'importance croissante des tests automatisés dans les pipelines DevOps."
+        title: "Censure et surveillance : surchauffe au Parlement",
+        category: "Éthique",
+        date: "30 Jan 2026",
+        source: "La Quadrature du Net",
+        url: "https://www.laquadrature.net/2026/01/30/censure-et-surveillance-surchauffe-au-parlement/",
+        summary: "Analyse critique de la dérive autoritaire et de l'inflation des lois sécuritaires en discussion au Parlement, incluant la prolongation de la vidéosurveillance algorithmique (VSA)."
     },
     {
         id: 2,
-        title: "IA, vie privée et responsabilité des développeurs",
-        category: "Juridique",
-        date: "10 Jan 2026",
-        source: "BBC Technology",
-        url: "https://www.bbc.com/news/technology",
-        summary: "Analyse des enjeux éthiques liés aux algorithmes : transparence, biais cognitifs et RGPD. Comment intégrer la notion de 'Privacy by Design' dès la conception ?"
+        title: "IA générative : Défaillance des garde-fous face à la violence",
+        category: "Sécurité",
+        date: "12 Fév 2026",
+        source: "Developpez.com",
+        url: "https://intelligence-artificielle.developpez.com/actu/381053/ChatGPT-Gemini-et-d-autres-ont-aide-et-encourage-des-adolescents-a-planifier-des-fusillades-et-des-actes-de-violence-selon-une-etude-Sur-10-testes-seul-Claude-a-neutralise-les-agresseurs-potentiels/",
+        summary: "Une étude alarmante révèle que la majorité des modèles d'IA (ChatGPT, Gemini) peinent à bloquer les requêtes malveillantes de mineurs, posant la question de la responsabilité des concepteurs."
     },
     {
         id: 3,
-        title: "Flutter vs React Native : Le duel en 2026",
-        category: "Mobile",
-        date: "02 Dec 2025",
-        source: "Medium / Flutter Dev",
-        url: "#",
-        summary: "Comparatif des performances avec le nouveau moteur de rendu Impeller de Flutter. React Native garde l'avantage sur l'écosystème JS, mais Flutter gagne sur l'UI fluide."
+        title: "Ces détails qui rendent les interfaces meilleures",
+        category: "UI/UX",
+        date: "05 Fév 2026",
+        source: "Jakub.kr",
+        url: "https://jakub.kr/writing/details-that-make-interfaces-feel-better",
+        summary: "Une plongée passionnante dans l'intégration front-end. Comment l'attention portée aux micro-interactions, aux animations et aux espacements transforme l'expérience utilisateur."
+    },
+    {
+        id: 4,
+        title: "Intégrer le Privacy by Design dans vos développements",
+        category: "Éthique",
+        date: "15 Fév 2026",
+        source: "CNIL (Recommandation)",
+        url: "https://www.cnil.fr/fr/rgpd-le-guide-du-developpeur",
+        summary: "Rappel des bonnes pratiques pour les développeurs : comment penser l'architecture logicielle et les bases de données pour garantir la protection de la vie privée dès la conception."
     }
-    // Pour ajouter un article, copie-colle un bloc { ... } ci-dessus et change les infos
 ];
 
 // Les catégories pour le filtre
-const categories = ["Tout", "Développement", "Juridique", "Mobile", "Sécurité"];
+const categories = ["Tout", "Développement", "Éthique", "Sécurité", "UI/UX"];
 
 export default function Veille() {
     const [activeCategory, setActiveCategory] = useState("Tout");
@@ -65,7 +73,7 @@ export default function Veille() {
                         Veille <span className="text-luxury-gold">Technologique</span>
                     </motion.h1>
                     <p className="text-gray-400 max-w-2xl mx-auto">
-                        Une curation d'articles pour suivre les évolutions techniques et juridiques du secteur informatique.
+                        Une curation d'articles pour suivre les évolutions techniques, éthiques et UI/UX du secteur informatique.
                     </p>
                 </div>
 
@@ -101,17 +109,18 @@ export default function Veille() {
 
                             {/* Header Carte : Date & Catégorie */}
                             <div className="flex justify-between items-center mb-6">
-                <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
-                    article.category === "Juridique" ? "border-purple-800 bg-purple-900/20 text-purple-300" :
-                        article.category === "Développement" ? "border-blue-800 bg-blue-900/20 text-blue-300" :
-                            article.category === "Mobile" ? "border-cyan-800 bg-cyan-900/20 text-cyan-300" :
-                                "border-gray-700 bg-gray-800 text-gray-400"
-                }`}>
-                  <FaTag className="inline mr-2 mb-0.5" />{article.category}
-                </span>
+                                <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
+                                    article.category === "Éthique" ? "border-green-800 bg-green-900/20 text-green-300" :
+                                        article.category === "Sécurité" ? "border-red-800 bg-red-900/20 text-red-300" :
+                                            article.category === "UI/UX" ? "border-cyan-800 bg-cyan-900/20 text-cyan-300" :
+                                                article.category === "Développement" ? "border-blue-800 bg-blue-900/20 text-blue-300" :
+                                                    "border-gray-700 bg-gray-800 text-gray-400"
+                                }`}>
+                                  <FaTag className="inline mr-2 mb-0.5" />{article.category}
+                                </span>
                                 <span className="text-gray-500 text-xs flex items-center gap-2">
-                  <FaCalendarAlt /> {article.date}
-                </span>
+                                  <FaCalendarAlt /> {article.date}
+                                </span>
                             </div>
 
                             {/* Contenu */}
@@ -124,13 +133,14 @@ export default function Veille() {
 
                             {/* Footer Carte : Source */}
                             <div className="pt-6 border-t border-gray-800 flex justify-between items-center mt-auto">
-                <span className="text-xs text-gray-500 uppercase tracking-widest">
-                  Source : {article.source}
-                </span>
+                                <span className="text-xs text-gray-500 uppercase tracking-widest">
+                                  Source : {article.source}
+                                </span>
                                 <a
                                     href={article.url}
                                     target="_blank"
-                                    className="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 group-hover:bg-luxury-gold group-hover:text-black group-hover:border-luxury-gold transition-all"
+                                    rel="noopener noreferrer"
+                                    className="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 group-hover:bg-luxury-gold group-hover:text-black group-hover:border-luxury-gold transition-all z-10"
                                 >
                                     <FaExternalLinkAlt size={12} />
                                 </a>

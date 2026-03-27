@@ -14,8 +14,12 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-    title: "Ton Nom - Portfolio",
-    description: "Développeur React & Flutter",
+    title: "Tobias Ferrand", // Ton nom dans l'onglet
+    description: "Portfolio de Tobias Ferrand - Développeur Fullstack",
+    icons: {
+        icon: "/images/image.png", // Utilise ton logo comme icône
+        apple: "/images/image.png", // Optionnel : pour les raccourcis iPhone
+    },
 };
 
 export default function RootLayout({

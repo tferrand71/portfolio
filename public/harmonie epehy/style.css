@@ -1,0 +1,462 @@
+/* styles.css */
+
+/* Reset simple */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Corps de page */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fdfdfd;
+  scroll-behavior: smooth;
+  justify-content: center;
+  height: 100vh;
+}
+
+/* Sections générales */
+section {
+  padding: 80px 20px;
+  text-align: center;
+}
+
+section:nth-child(even) {
+  background-color: #f4f4f4;
+}
+
+section h2 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  color: #202a44;
+}
+
+section p {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Accueil */
+#accueil {
+  position: relative;
+  background: url('banniere.JPG') no-repeat center center/cover;
+  color: white;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 0 20px;
+}
+
+
+
+#accueil h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+#accueil p {
+  font-size: 1.2rem;
+}
+
+/* Concerts */
+#concerts ul {
+  list-style: none;
+  padding: 0;
+}
+
+#concerts li {
+  margin: 10px 0;
+}
+
+/* Galerie */
+#galerie p {
+  margin-bottom: 10px;
+}
+
+/* Galerie en mosaïque */
+.grid-galerie {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  padding: 20px;
+}
+
+.grid-galerie img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease;
+}
+
+.grid-galerie img:hover {
+  transform: scale(1.05);
+}
+
+/* Lightbox */
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.lightbox img {
+  max-width: 90%;
+  max-height: 80%;
+  box-shadow: 0 0 15px #000;
+  border-radius: 10px;
+}
+
+/* Formulaire */
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+form label {
+  display: block;
+  margin-top: 15px;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+form button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #202a44;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+form button:hover {
+  background-color: #2f3c66;
+}
+
+/* Footer */
+footer {
+  background-color: #202a44;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-size: 0.9rem;
+}
+
+/* Membres */
+.mosaïque {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.carte-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.carte-link:hover {
+  transform: translateY(-5px);
+}
+
+.carte {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  text-align: center;
+  padding-bottom: 15px;
+  transition: box-shadow 0.3s ease;
+}
+
+.carte-link:hover .carte {
+  box-shadow: 0 5px 20px rgba(32, 42, 68, 0.3);
+}
+
+.carte img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-bottom: 1px solid #ddd;
+}
+
+.infos {
+  padding: 10px;
+}
+
+.infos h2 {
+  margin: 10px 0 5px;
+  font-size: 18px;
+  color: #202a44;
+}
+
+.infos p {
+  margin: 0;
+  color: #666;
+}
+
+/* Page de biographie */
+.biographie-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+.biographie-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.biographie-header h1 {
+  color: #202a44;
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.biographie-header .instrument {
+  color: #666;
+  font-size: 1.2rem;
+  font-style: italic;
+}
+
+.biographie-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.biographie-photo {
+  text-align: center;
+}
+
+.biographie-photo img {
+  width: 100%;
+  max-width: 400px;
+  height: 500px;
+  object-fit: cover;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(32, 42, 68, 0.2);
+}
+
+.biographie-info {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.biographie-info h2 {
+  color: #202a44;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  border-bottom: 3px solid #202a44;
+  padding-bottom: 10px;
+}
+
+.biographie-info p {
+  margin-bottom: 20px;
+  line-height: 1.8;
+  color: #333;
+}
+
+.biographie-info .bio-section {
+  margin-bottom: 30px;
+}
+
+.biographie-info .bio-section h3 {
+  color: #202a44;
+  font-size: 1.3rem;
+  margin-bottom: 15px;
+}
+
+.biographie-info .bio-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.biographie-info .bio-section li {
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  color: #555;
+}
+
+.biographie-info .bio-section li:last-child {
+  border-bottom: none;
+}
+
+.biographie-info .bio-section li strong {
+  color: #202a44;
+  font-weight: 600;
+}
+
+.retour-btn {
+  display: inline-block;
+  background-color: #202a44;
+  color: white;
+  padding: 12px 25px;
+  text-decoration: none;
+  border-radius: 8px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.retour-btn:hover {
+  background-color: #2f3c66;
+}
+
+/* Page de connexion */
+.login-box {
+  background: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.login-box h2 {
+  text-align: center;
+  color: #202a44;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-box input {
+  margin-top: 15px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-box button {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #202a44;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  section {
+    padding: 60px 15px;
+  }
+
+  #accueil h1 {
+    font-size: 2.2rem;
+  }
+
+  #accueil p {
+    font-size: 1rem;
+  }
+
+  section h2 {
+    font-size: 1.6rem;
+  }
+
+  form {
+    padding: 0 10px;
+  }
+
+  .biographie-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+
+  .biographie-header h1 {
+    font-size: 2rem;
+  }
+
+  .biographie-info {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  #accueil {
+    padding: 80px 15px;
+    text-align: center;
+  }
+
+  #accueil h1 {
+    font-size: 1.8rem;
+  }
+
+  #accueil p {
+    font-size: 0.95rem;
+  }
+
+  form input,
+  form textarea {
+    font-size: 0.9rem;
+  }
+
+  form button {
+    font-size: 0.9rem;
+    padding: 8px 16px;
+  }
+
+  footer {
+    font-size: 0.8rem;
+    padding: 15px;
+  }
+
+  .grid-galerie {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+
+  .grid-galerie img {
+    height: 150px;
+  }
+
+  .biographie-container {
+    padding: 20px 15px;
+  }
+
+  .biographie-header h1 {
+    font-size: 1.8rem;
+  }
+
+  .biographie-info {
+    padding: 15px;
+  }
+}

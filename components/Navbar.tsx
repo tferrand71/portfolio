@@ -1,4 +1,5 @@
 "use client";
+
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { FiMenu, FiX } from "react-icons/fi";
@@ -6,9 +7,11 @@ import { FiMenu, FiX } from "react-icons/fi";
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+    const [mounted, setMounted] = useState(false); // AJOUT : État de montage
 
-    // Effet pour changer l'opacité au scroll
+    // On attend que le composant soit monté pour éviter le crash Safari
     useEffect(() => {
+        setMounted(true);
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
         };
@@ -21,18 +24,25 @@ export default function Navbar() {
         { name: "Veille", href: "/veille" },
         { name: "Cours", href: "/cours" },
         { name: "Projets", href: "/projets" },
+        { name: "Ressources", href: "/ressources" },
     ];
+
+    // Si le composant n'est pas encore "monté", on rend une version invisible ou simplifiée
+    // Cela empêche Safari de comparer deux versions différentes du HTML
+    if (!mounted) {
+        return <div className="fixed top-0 w-full h-20 bg-transparent"></div>;
+    }
 
     return (
         <nav
             className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-                scrolled ? "bg-rich-black/90 backdrop-blur-md py-4 border-b border-white/10" : "bg-transparent py-6"
+                scrolled ? "bg-black/90 backdrop-blur-md py-4 border-b border-white/10" : "bg-transparent py-6"
             }`}
         >
             <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
                 {/* Logo */}
                 <Link href="/" className="text-2xl font-serif font-bold text-white hover:text-luxury-gold transition-colors">
-                    Tobias<span className="text-luxury-gold">.</span>
+                    Tobias<span className="text-luxury-gold"> FERRAND</span>
                 </Link>
 
                 {/* Menu Desktop */}
@@ -47,7 +57,6 @@ export default function Navbar() {
                         </Link>
                     ))}
 
-                    {/* Bouton Contact direct */}
                     <Link
                         href="/#contact"
                         className="ml-4 px-6 py-2 border border-luxury-gold text-luxury-gold text-xs font-bold uppercase tracking-widest rounded hover:bg-luxury-gold hover:text-black transition-all duration-300"
@@ -65,9 +74,9 @@ export default function Navbar() {
                 </button>
             </div>
 
-            {/* Menu Mobile avec animation simple */}
+            {/* Menu Mobile */}
             {isOpen && (
-                <div className="md:hidden bg-card-dark border-t border-gray-800 absolute w-full p-6 flex flex-col gap-6 shadow-2xl">
+                <div className="md:hidden bg-black border-t border-gray-800 absolute w-full p-6 flex flex-col gap-6 shadow-2xl">
                     {links.map((link) => (
                         <Link
                             key={link.name}
