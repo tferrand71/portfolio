@@ -134,40 +134,6 @@ npm run build
 ### 2. Transfert FTP
 
 * Envoyer `/out` → `/www`
-
----
-
-### 3. Configuration `.htaccess`
-
-```apache
-Options -Indexes
-DirectorySlash Off
-DirectoryIndex index.html
-
-<IfModule mod_rewrite.c>
-    RewriteEngine On
-
-    RewriteCond %{ENV:HTTPS} !on
-    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    RewriteCond %{REQUEST_FILENAME} -f
-    RewriteRule ^ - [L]
-
-    RewriteCond %{REQUEST_URI} ^/(.*)/$
-    RewriteRule ^ /%1 [L,R=301]
-
-    RewriteCond %{REQUEST_FILENAME} -d
-    RewriteCond %{REQUEST_FILENAME}/index.html -f
-    RewriteRule ^(.*)$ $1/index.html [L]
-
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME}.html -f
-    RewriteRule ^(.*)$ $1.html [L]
-
-    ErrorDocument 404 /404.html
-</IfModule>
-```
-
 ---
 
 ## 📫 Contact
