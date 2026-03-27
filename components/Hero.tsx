@@ -39,7 +39,7 @@ export default function Hero() {
                     {/* ------------------------------------------ */}
 
                     <div className="flex flex-wrap gap-4">
-                        <a href="/files/mon-cv.pdf" download className="px-6 py-3 bg-luxury-gold text-black font-bold rounded hover:bg-white transition-colors flex items-center gap-2">
+                        <a href="/downloads/CV_FERRAND_Tobias.pdf" download className="px-6 py-3 bg-luxury-gold text-black font-bold rounded hover:bg-white transition-colors flex items-center gap-2">
                             <FiDownload /> Télécharger CV
                         </a>
 
