@@ -28,12 +28,12 @@ const articles = [
     },
     {
         id: 3,
-        title: "Ces détails qui rendent les interfaces meilleures",
-        category: "UI/UX",
-        date: "05 Fév 2026",
-        source: "Jakub.kr",
-        url: "https://jakub.kr/writing/details-that-make-interfaces-feel-better",
-        summary: "Une plongée passionnante dans l'intégration front-end. Comment l'attention portée aux micro-interactions, aux animations et aux espacements transforme l'expérience utilisateur."
+        title: "Le Développement Mobile A Changé - Et Les Développeurs Doivent Aussi",
+        category: "Développement",
+        date: "09 avril 2026",
+        source: "dev.to",
+        url: "https://dev.to/devilseyrock/mobile-development-has-changed-and-so-must-developers-4716",
+        summary: "Analyse des nouvelles exigences du développement mobile : pourquoi les développeurs doivent dépasser la simple création d'interfaces pour concevoir de véritables systèmes modulaires, sécurisés, multi-écrans et intégrants l'IA."
     },
     {
         id: 4,
@@ -41,8 +41,8 @@ const articles = [
         category: "Éthique",
         date: "15 Fév 2026",
         source: "CNIL (Recommandation)",
-        url: "https://www.cnil.fr/fr/rgpd-le-guide-du-developpeur",
-        summary: "Rappel des bonnes pratiques pour les développeurs : comment penser l'architecture logicielle et les bases de données pour garantir la protection de la vie privée dès la conception."
+        url: "https://www.cnil.fr/fr/referentiel-durees-conservation-donnees-rh",
+        summary: "Présentation du référentiel pratique de la CNIL guidant les employeurs, RH et DPO dans l'identification et l'application des durées légales de conservation des données personnelles des salariés."
     }
 ];
 
