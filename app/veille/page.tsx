@@ -1,12 +1,10 @@
 "use client";
 import Navbar from "@/components/Navbar";
-import { motion } from "framer-motion";
-import { useState } from "react";
-import { FaExternalLinkAlt, FaCalendarAlt, FaTag, FaFilter } from "react-icons/fa";
+import Footer from "@/components/Footer";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useState, useRef } from "react";
+import { FaExternalLinkAlt, FaCalendarAlt, FaTag, FaFilter, FaNewspaper } from "react-icons/fa";
 
-// =================================================================================
-// 1. C'EST ICI QUE TU AJOUTES TES ARTICLES
-// =================================================================================
 const articles = [
     {
         id: 1,
@@ -46,118 +44,206 @@ const articles = [
     }
 ];
 
-// Les catégories pour le filtre
 const categories = ["Tout", "Développement", "Éthique", "Sécurité", "UI/UX"];
 
 export default function Veille() {
     const [activeCategory, setActiveCategory] = useState("Tout");
+    const containerRef = useRef(null);
 
-    // Logique de filtre
     const filteredArticles = activeCategory === "Tout"
         ? articles
         : articles.filter(art => art.category === activeCategory);
 
     return (
-        <main className="min-h-screen bg-rich-black text-white selection:bg-luxury-gold selection:text-black">
+        <main className="min-h-screen bg-transparent relative overflow-hidden" ref={containerRef}>
+            {/* Ambient Background Glows */}
+            <motion.div 
+                animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.2, 0.1] }}
+                transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+                className="fixed top-1/4 right-0 w-[50vw] h-[50vw] bg-[var(--color-pink)]/10 rounded-full blur-[150px] -z-10 pointer-events-none"
+            />
+            <motion.div 
+                animate={{ scale: [1, 1.3, 1], opacity: [0.05, 0.15, 0.05] }}
+                transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                className="fixed bottom-0 left-0 w-[60vw] h-[60vw] bg-[var(--color-mauve)]/10 rounded-full blur-[180px] -z-10 pointer-events-none"
+            />
+
             <Navbar />
 
-            <div className="pt-32 pb-20 max-w-6xl mx-auto px-6">
+            <div className="pt-48 pb-32 max-w-7xl mx-auto px-6 relative z-10">
 
-                {/* En-tête */}
-                <div className="text-center mb-16">
-                    <motion.h1
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        className="text-5xl md:text-6xl font-serif font-bold text-white mb-6"
-                    >
-                        Veille <span className="text-luxury-gold">Technologique</span>
-                    </motion.h1>
-                    <p className="text-gray-400 max-w-2xl mx-auto">
-                        Une curation d'articles pour suivre les évolutions techniques, éthiques et UI/UX du secteur informatique.
-                    </p>
-                </div>
-
-                {/* Barre de Filtres */}
-                <div className="flex flex-wrap justify-center gap-4 mb-12">
-                    {categories.map((cat) => (
-                        <button
-                            key={cat}
-                            onClick={() => setActiveCategory(cat)}
-                            className={`px-6 py-2 rounded-full text-sm font-bold border transition-all duration-300 ${
-                                activeCategory === cat
-                                    ? "bg-luxury-gold text-black border-luxury-gold shadow-[0_0_15px_rgba(212,175,55,0.4)]"
-                                    : "bg-transparent text-gray-400 border-gray-700 hover:border-gray-500"
-                            }`}
+                {/* En-tête asymétrique */}
+                <div className="flex flex-col lg:flex-row justify-between items-end mb-24 gap-12">
+                    <div className="lg:w-2/3">
+                        <motion.h1
+                            initial={{ opacity: 0, x: -50 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            className="text-5xl md:text-7xl font-serif font-bold text-[var(--color-text-main)] mb-6 leading-tight"
                         >
-                            {cat}
-                        </button>
-                    ))}
-                </div>
-
-                {/* Grille des Articles */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {filteredArticles.map((article, index) => (
-                        <motion.article
-                            key={article.id}
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group bg-card-dark rounded-xl p-8 border border-gray-800 hover:border-luxury-gold/50 hover:shadow-glow transition-all duration-300 flex flex-col relative overflow-hidden"
-                        >
-                            {/* Effet décoratif d'arrière-plan */}
-                            <div className="absolute top-0 right-0 w-32 h-32 bg-luxury-gold/5 rounded-full blur-2xl -translate-y-1/2 translate-x-1/2 group-hover:bg-luxury-gold/10 transition-colors" />
-
-                            {/* Header Carte : Date & Catégorie */}
-                            <div className="flex justify-between items-center mb-6">
-                                <span className={`px-3 py-1 rounded-full text-xs font-bold border ${
-                                    article.category === "Éthique" ? "border-green-800 bg-green-900/20 text-green-300" :
-                                        article.category === "Sécurité" ? "border-red-800 bg-red-900/20 text-red-300" :
-                                            article.category === "UI/UX" ? "border-cyan-800 bg-cyan-900/20 text-cyan-300" :
-                                                article.category === "Développement" ? "border-blue-800 bg-blue-900/20 text-blue-300" :
-                                                    "border-gray-700 bg-gray-800 text-gray-400"
-                                }`}>
-                                  <FaTag className="inline mr-2 mb-0.5" />{article.category}
-                                </span>
-                                <span className="text-gray-500 text-xs flex items-center gap-2">
-                                  <FaCalendarAlt /> {article.date}
-                                </span>
-                            </div>
-
-                            {/* Contenu */}
-                            <h3 className="text-2xl font-serif font-bold text-white mb-4 group-hover:text-luxury-gold transition-colors">
-                                {article.title}
-                            </h3>
-                            <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-grow">
-                                {article.summary}
-                            </p>
-
-                            {/* Footer Carte : Source */}
-                            <div className="pt-6 border-t border-gray-800 flex justify-between items-center mt-auto">
-                                <span className="text-xs text-gray-500 uppercase tracking-widest">
-                                  Source : {article.source}
-                                </span>
-                                <a
-                                    href={article.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="w-10 h-10 rounded-full border border-gray-600 flex items-center justify-center text-gray-400 group-hover:bg-luxury-gold group-hover:text-black group-hover:border-luxury-gold transition-all z-10"
-                                >
-                                    <FaExternalLinkAlt size={12} />
-                                </a>
-                            </div>
-                        </motion.article>
-                    ))}
-                </div>
-
-                {/* Message si aucun article */}
-                {filteredArticles.length === 0 && (
-                    <div className="text-center py-20 text-gray-500">
-                        <FaFilter className="text-4xl mx-auto mb-4 opacity-20" />
-                        <p>Aucun article trouvé dans cette catégorie pour le moment.</p>
+                            Veille <br/><span className="text-[var(--color-pink)]">Technologique.</span>
+                        </motion.h1>
+                        <p className="text-[var(--color-text-muted)] font-light leading-relaxed text-lg max-w-xl">
+                            Une curation d'articles pour suivre les évolutions techniques, éthiques et UX du secteur informatique. Restez à la pointe de l'innovation.
+                        </p>
                     </div>
-                )}
+
+                    {/* Filtres dans un panneau asymétrique */}
+                    <motion.div 
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="lg:w-1/3 glass-panel p-6 rounded-[2rem] border border-[var(--color-glass-border)] w-full"
+                    >
+                        <div className="flex items-center gap-3 mb-6">
+                            <FaFilter className="text-[var(--color-pink)]" />
+                            <h3 className="text-xs font-bold uppercase tracking-widest text-[var(--color-text-main)]">Filtrer par catégorie</h3>
+                        </div>
+                        <div className="flex flex-wrap gap-3">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat}
+                                    onClick={() => setActiveCategory(cat)}
+                                    className={`px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 ${
+                                        activeCategory === cat
+                                            ? "bg-[var(--color-pink)] text-black shadow-[0_0_20px_-5px_var(--color-pink)]"
+                                            : "bg-black/30 text-[var(--color-text-muted)] border border-white/5 hover:border-[var(--color-pink)]/50 hover:text-white"
+                                    }`}
+                                >
+                                    {cat}
+                                </button>
+                            ))}
+                        </div>
+                    </motion.div>
+                </div>
+
+                {/* Liste Staggered */}
+                <div className="relative mt-32">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
+                        {/* Colonne Gauche */}
+                        <div className="flex flex-col gap-8 lg:gap-16">
+                            {filteredArticles.filter((_, i) => i % 2 === 0).map((article, index) => (
+                                <motion.article
+                                    key={article.id}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                                    className="w-full glass-panel p-8 md:p-10 rounded-[2.5rem] border border-[var(--color-glass-border)] hover:border-[var(--color-pink)]/50 transition-all duration-500 group hover:shadow-[0_15px_40px_-10px_var(--color-pink)] relative overflow-hidden bg-black/20"
+                                >
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-pink)]/10 blur-[50px] -translate-y-1/2 translate-x-1/2 group-hover:bg-[var(--color-pink)]/20 transition-colors duration-500" />
+                                    
+                                    <div className="flex flex-wrap items-center gap-4 mb-6">
+                                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
+                                            article.category === "Éthique" ? "border-green-500/30 bg-green-500/10 text-green-300" :
+                                            article.category === "Sécurité" ? "border-red-500/30 bg-red-500/10 text-red-300" :
+                                            article.category === "UI/UX" ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-300" :
+                                            article.category === "Développement" ? "border-blue-500/30 bg-blue-500/10 text-blue-300" :
+                                            "border-[var(--color-pink)]/30 bg-[var(--color-pink)]/10 text-[var(--color-pink)]"
+                                        }`}>
+                                            {article.category}
+                                        </span>
+                                        <span className="text-[var(--color-text-muted)] text-xs font-mono">
+                                            {article.date}
+                                        </span>
+                                    </div>
+
+                                    <h3 className="text-2xl font-serif font-bold text-[var(--color-text-main)] mb-6 group-hover:text-[var(--color-pink)] transition-colors">
+                                        {article.title}
+                                    </h3>
+                                    <p className="text-[var(--color-text-muted)] text-sm font-light leading-relaxed mb-8 flex-grow">
+                                        {article.summary}
+                                    </p>
+
+                                    <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-black/40 flex items-center justify-center">
+                                                <FaNewspaper className="text-xs text-[var(--color-text-muted)]" />
+                                            </div>
+                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-bold">
+                                                {article.source}
+                                            </span>
+                                        </div>
+                                        <a
+                                            href={article.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-12 h-12 rounded-full border border-[var(--color-glass-border)] flex items-center justify-center text-[var(--color-text-main)] hover:bg-[var(--color-pink)] hover:text-black hover:border-[var(--color-pink)] transition-all z-10"
+                                        >
+                                            <FaExternalLinkAlt size={14} />
+                                        </a>
+                                    </div>
+                                </motion.article>
+                            ))}
+                        </div>
+
+                        {/* Colonne Droite */}
+                        <div className="flex flex-col gap-8 lg:gap-16 lg:mt-32">
+                            {filteredArticles.filter((_, i) => i % 2 !== 0).map((article, index) => (
+                                <motion.article
+                                    key={article.id}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    viewport={{ once: true, margin: "-100px" }}
+                                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                                    className="w-full glass-panel p-8 md:p-10 rounded-[2.5rem] border border-[var(--color-glass-border)] hover:border-[var(--color-pink)]/50 transition-all duration-500 group hover:shadow-[0_15px_40px_-10px_var(--color-pink)] relative overflow-hidden bg-black/20"
+                                >
+                                    <div className="absolute top-0 right-0 w-32 h-32 bg-[var(--color-pink)]/10 blur-[50px] -translate-y-1/2 translate-x-1/2 group-hover:bg-[var(--color-pink)]/20 transition-colors duration-500" />
+                                    
+                                    <div className="flex flex-wrap items-center gap-4 mb-6">
+                                        <span className={`px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border ${
+                                            article.category === "Éthique" ? "border-green-500/30 bg-green-500/10 text-green-300" :
+                                            article.category === "Sécurité" ? "border-red-500/30 bg-red-500/10 text-red-300" :
+                                            article.category === "UI/UX" ? "border-cyan-500/30 bg-cyan-500/10 text-cyan-300" :
+                                            article.category === "Développement" ? "border-blue-500/30 bg-blue-500/10 text-blue-300" :
+                                            "border-[var(--color-pink)]/30 bg-[var(--color-pink)]/10 text-[var(--color-pink)]"
+                                        }`}>
+                                            {article.category}
+                                        </span>
+                                        <span className="text-[var(--color-text-muted)] text-xs font-mono">
+                                            {article.date}
+                                        </span>
+                                    </div>
+
+                                    <h3 className="text-2xl font-serif font-bold text-[var(--color-text-main)] mb-6 group-hover:text-[var(--color-pink)] transition-colors">
+                                        {article.title}
+                                    </h3>
+                                    <p className="text-[var(--color-text-muted)] text-sm font-light leading-relaxed mb-8 flex-grow">
+                                        {article.summary}
+                                    </p>
+
+                                    <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-8 h-8 rounded-full bg-black/40 flex items-center justify-center">
+                                                <FaNewspaper className="text-xs text-[var(--color-text-muted)]" />
+                                            </div>
+                                            <span className="text-[10px] text-[var(--color-text-muted)] uppercase tracking-widest font-bold">
+                                                {article.source}
+                                            </span>
+                                        </div>
+                                        <a
+                                            href={article.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="w-12 h-12 rounded-full border border-[var(--color-glass-border)] flex items-center justify-center text-[var(--color-text-main)] hover:bg-[var(--color-pink)] hover:text-black hover:border-[var(--color-pink)] transition-all z-10"
+                                        >
+                                            <FaExternalLinkAlt size={14} />
+                                        </a>
+                                    </div>
+                                </motion.article>
+                            ))}
+                        </div>
+                    </div>
+
+                    {filteredArticles.length === 0 && (
+                        <div className="text-center py-32 text-[var(--color-text-muted)] glass-panel rounded-[2rem] max-w-2xl mx-auto border-[var(--color-glass-border)]">
+                            <FaFilter className="text-5xl mx-auto mb-6 opacity-50 text-[var(--color-pink)]" />
+                            <p className="text-lg font-light">Aucun article trouvé dans cette catégorie pour le moment.</p>
+                        </div>
+                    )}
+                </div>
 
             </div>
+            <Footer />
         </main>
     );
 }

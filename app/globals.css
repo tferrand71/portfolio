@@ -1,39 +1,50 @@
 @import "tailwindcss";
 
 @theme {
-    /* Nos couleurs personnalisées */
-    --color-rich-black: #0a0a0a;
-    --color-card-dark: #121212;
-    --color-luxury-gold: #D4AF37;
-    --color-luxury-gold-dim: #C5A028;
+    /* Backgrounds */
+    --color-hero-bg: #07050A; /* Très sombre pour le hero */
+    --color-midnight: #13111C; /* Fond principal Midnight Violet */
+    --color-glass: rgba(30, 27, 46, 0.4); /* Pour le glassmorphism */
+    --color-glass-border: rgba(255, 255, 255, 0.05);
+    
+    /* Text */
+    --color-text-main: #e2e0e9;
+    --color-text-muted: #8b8898;
 
-    /* Notre effet d'ombre dorée */
-    --shadow-glow: 0 0 20px rgba(212, 175, 55, 0.15);
+    /* Energetic Accent Colors */
+    --color-gold: #D4AF37;
+    --color-mauve: #8b5cf6;
+    --color-pink: #ec4899;
+    --color-red: #ef4444;
 
-    /* Nos polices (on les liera dans l'étape suivante) */
+    /* Fonts */
     --font-serif: var(--font-playfair);
     --font-sans: var(--font-inter);
 }
 
-/* Le style de base de la page */
+@layer utilities {
+    .text-gradient-energetic {
+        @apply bg-clip-text text-transparent bg-gradient-to-r from-[var(--color-mauve)] via-[var(--color-pink)] to-[var(--color-gold)];
+    }
+    
+    .shadow-energetic {
+        box-shadow: 0 10px 40px -10px rgba(139, 92, 246, 0.15);
+    }
+    
+    .glass-panel {
+        @apply bg-[var(--color-glass)] backdrop-blur-xl border border-[var(--color-glass-border)] shadow-2xl;
+    }
+}
+
 body {
-    background-color: var(--color-rich-black);
-    color: #ffffff;
+    background-color: var(--color-midnight);
+    color: var(--color-text-main);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
 }
 
-/* Scrollbar classe */
-::-webkit-scrollbar {
-    width: 8px;
-}
-::-webkit-scrollbar-track {
-    background: var(--color-rich-black);
-}
-::-webkit-scrollbar-thumb {
-    background: #333;
-    border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-    background: var(--color-luxury-gold);
-}
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-midnight); }
+::-webkit-scrollbar-thumb { background: #3f3c4d; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-mauve); }

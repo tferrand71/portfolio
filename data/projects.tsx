@@ -1,5 +1,5 @@
-import { FaReact, FaHtml5, FaCss3Alt, FaJs, FaCoffee, FaMusic } from "react-icons/fa";
-import { SiFlutter, SiDart } from "react-icons/si";
+import { FaReact, FaHtml5, FaCss3Alt, FaJs, FaCoffee, FaMusic, FaYoutube, FaLanguage } from "react-icons/fa";
+import { SiFlutter, SiDart, SiNextdotjs, SiTailwindcss } from "react-icons/si";
 import { ReactNode } from "react";
 
 export interface Project {
@@ -53,8 +53,8 @@ export const projects: Project[] = [
         title: "Harmonie d'Épehy",
         category: "Site Associatif",
         description: "Site officiel de l'orchestre d'harmonie d'Épehy.",
-        longDescription: "Développement du site web pour l'association musicale Harmonie d'Épehy. L'objectif était de moderniser leur communication, de présenter l'agenda des concerts et de faciliter le recrutement de nouveaux musiciens via une interface élégante.",
-        tech: [{ name: "HTML5", icon: <FaHtml5 />, color: "text-orange-500" }, { name: "CSS3", icon: <FaCss3Alt />, color: "text-blue-500" }],
+        longDescription: "Développement du site web pour l'association musicale Harmonie d'Épehy. L'objectif était de moderniser leur communication, de présenter l'agenda des concerts et de faciliter le recrutement de nouveaux musiciens via une interface élégante. L'application a été entièrement refondue avec Next.js pour de meilleures performances et un SEO optimisé.",
+        tech: [{ name: "Next.js", icon: <SiNextdotjs />, color: "text-white" }, { name: "React", icon: <FaReact />, color: "text-blue-400" }, { name: "Tailwind", icon: <SiTailwindcss />, color: "text-cyan-400" }],
         links: { demo: "https://harmonie-epehy.fr" },
         icon: <FaMusic className="text-5xl text-luxury-gold" />,
         gallery: [
@@ -81,8 +81,21 @@ export const projects: Project[] = [
             "/images/Maki - progress.PNG",
             "/images/Maki - progress 2.PNG",
             "/images/Maki - search.PNG",
-
-
         ]
+    },
+    {
+        id: "julien-jacquemart",
+        title: "Julien Jacquemart",
+        category: "Site Vitrine",
+        description: "Site officiel du chef d'orchestre Julien Jacquemart.",
+        longDescription: "Création d'un site web complet et moderne pour mon ami et chef d'orchestre Julien Jacquemart. Bientôt disponible sur julienjacquemart.fr, ce projet tire parti de toute la puissance de Next.js. Il intègre notamment l'API YouTube pour l'affichage dynamique de ses performances et l'API DeepL pour une gestion des traductions multilingues de haute qualité.",
+        tech: [
+            { name: "Next.js", icon: <SiNextdotjs />, color: "text-white" },
+            { name: "API YouTube", icon: <FaYoutube />, color: "text-red-500" },
+            { name: "API DeepL", icon: <FaLanguage />, color: "text-blue-400" }
+        ],
+        links: { demo: "https://julienjacquemart.fr" },
+        status: "Bientôt disponible",
+        gallery: []
     }
 ];
