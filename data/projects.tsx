@@ -94,7 +94,7 @@ export const projects: Project[] = [
             { name: "API YouTube", icon: <FaYoutube />, color: "text-red-500" },
             { name: "API DeepL", icon: <FaLanguage />, color: "text-blue-400" }
         ],
-        links: { demo: "https://julienjacquemart.fr" },
+        links: { demo: "https://site-julien-next-js.vercel.app" },
         status: "Bientôt disponible",
         gallery: []
     }
