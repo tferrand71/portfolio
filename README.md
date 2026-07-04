@@ -1,8 +1,8 @@
 # 🌑 Tobias Ferrand - Portfolio Premium
 
-[![Site en ligne](https://img.shields.io/badge/🌍_Voir_le_site-tobias--ferrand.ovh-D4AF37?style=for-the-badge)](https://tobias-ferrand.ovh)
-[![Next.js](https://img.shields.io/badge/Next.js_15-Black?style=for-the-badge\&logo=next.js\&logoColor=white)](https://nextjs.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge\&logo=tailwind-css\&logoColor=white)](https://tailwindcss.com/)
+[![Site en ligne](https://img.shields.io/badge/🌍_Voir_le_site-tobias--ferrand.fr-D4AF37?style=for-the-badge)](https://tobias-ferrand.fr)
+[![Next.js](https://img.shields.io/badge/Next.js_15-Black?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
 Bienvenue sur le code source de mon portfolio personnel. Ce projet a été conçu pour refléter mon identité professionnelle à travers un design **"Luxury"** (thème noir profond, typographie serif, accents Or et Rouge énergique) tout en démontrant mes compétences techniques avancées en développement front-end et en intégration d'API.
 
@@ -14,9 +14,7 @@ Bienvenue sur le code source de mon portfolio personnel. Ce projet a été conç
 2. [🧠 Philosophie d'Architecture](#-philosophie-darchitecture)
 3. [🛠️ Stack Technique](#️-stack-technique)
 4. [📁 Structure du Projet](#-structure-du-projet)
-5. [💻 Installation & Développement Local](#-installation--développement-local)
-6. [🏗️ Déploiement sur OVH](#️-déploiement-sur-ovh)
-7. [📫 Contact](#-contact)
+5. [📫 Contact](#-contact)
 
 ---
 
@@ -37,8 +35,8 @@ Bienvenue sur le code source de mon portfolio personnel. Ce projet a été conç
 
 ### 🚀 Performances & SEO
 
-* **Static Site Generation (SSG) :** Exportation statique complète du projet (`output: 'export'`) pour des temps de chargement instantanés et une sécurité maximale.
-* **Routage Propre :** Configuration serveur Apache (`.htaccess`) optimisée pour masquer les extensions `.html` et forcer le HTTPS.
+* **Hébergement Vercel :** Déploiement continu et optimisation native (SSR, Edge caching, optimisation d'images automatique).
+* **Routage Propre :** Configuration Next.js avancée avec redirections (rewrites) pour supporter de multiples sous-projets (ex: CV Creator, IdeaStorm) de manière fluide.
 
 ---
 
@@ -64,7 +62,7 @@ Ce projet a été construit selon les standards de l'industrie, en refusant les 
 * **Animations :** Framer Motion
 * **Icônes :** React Icons (`react-icons/fa`, `react-icons/si`)
 * **Parsing Markdown :** `react-markdown`, `remark-gfm`
-* **Hébergement & Déploiement :** Serveur mutualisé OVH (Apache)
+* **Hébergement & Déploiement :** Vercel (CI/CD natif)
 
 ---
 
@@ -78,63 +76,11 @@ Ce projet a été construit selon les standards de l'industrie, en refusant les 
 │   └── ressources/       # Téléchargements (CV, compétences)
 ├── components/           # Composants réutilisables
 ├── data/                 # Données statiques
-├── public/               # Assets (images, PDF, fonts)
+├── public/               # Assets (images, PDF, fonts, sous-projets HTML statiques)
 ├── tailwind.config.ts    # Configuration Tailwind
-└── next.config.mjs       # Config Next.js (export statique)
+└── next.config.ts        # Config Next.js & redirections Vercel
 ```
 
----
-
-## 💻 Installation & Développement Local
-
-### 1. Prérequis & Installation
-
-* Node.js (v18+)
-* Un compte GitHub
-
-```bash
-git clone https://github.com/tferrand71/portfolio-tobias.git
-cd portfolio-tobias
-npm install
-```
-
----
-
-### 2. Configuration de l'API GitHub
-
-Créez un fichier `.env.local` :
-
-```env
-NEXT_PUBLIC_GITHUB_TOKEN=ghp_votre_token_secret_ici
-```
-
-> ⚠️ Utilisé uniquement en local pour éviter les limites API.
-
----
-
-### 3. Lancement
-
-```bash
-npm run dev
-```
-
-➡️ Accès : http://localhost:3000
-
----
-
-## 🏗️ Déploiement sur OVH
-
-### 1. Build statique
-
-```bash
-npm run build
-```
-
----
-
-### 2. Transfert FTP
-
-* Envoyer `/out` → `/www`
 ---
 
 ## 📫 Contact
