@@ -27,7 +27,7 @@ export const projects: Project[] = [
         description: "Générateur de CV interactif avec prévisualisation PDF.",
         longDescription: "CV Creator simplifie la création de curriculum vitae professionnels. En utilisant React, cet outil permet une personnalisation en temps réel. L'export PDF est géré côté client, garantissant que vos données personnelles ne quittent jamais votre navigateur.",
         tech: [{ name: "React", icon: <FaReact />, color: "text-blue-400" }, { name: "JS", icon: <FaJs />, color: "text-yellow-400" }],
-        links: { demo: "/cv-creator/index.html", repo: "" },
+        links: { demo: "/cv-creator", repo: "" },
         gallery: [
              "/images/cv-creator.png"
         ]
@@ -39,7 +39,7 @@ export const projects: Project[] = [
         description: "Jeu incrémental avec portage mobile Flutter.",
         longDescription: "IdeaStorm est un projet explorant le développement cross-platform. D'abord créé en React pour le web, il a été porté sur mobile avec Flutter pour offrir une expérience native. Il inclut un système de sauvegarde locale et des mécaniques de progression addictive.",
         tech: [{ name: "React", icon: <FaReact />, color: "text-blue-400" }, { name: "Flutter", icon: <SiFlutter />, color: "text-cyan-400" }],
-        links: { demo: "/ideastorm/index.html", repo: "https://github.com/tferrand71/ideastorm2.0.git", download:"/download/IdeaStorm.apk" },
+        links: { demo: "/ideastorm", repo: "https://github.com/tferrand71/ideastorm2.0.git", download:"/download/IdeaStorm.apk" },
         gallery: [
             "/images/IdeaStorm - connexion.png",
             "/images/IdeaStorm - accueil.png",

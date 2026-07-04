@@ -17,8 +17,9 @@ export const metadata: Metadata = {
     title: "Tobias Ferrand", // Ton nom dans l'onglet
     description: "Portfolio de Tobias Ferrand - Développeur Fullstack",
     icons: {
-        icon: "/images/image.png", // Utilise ton logo comme icône
-        apple: "/images/image.png", // Optionnel : pour les raccourcis iPhone
+        icon: "/favicon.ico",
+        shortcut: "/favicon.ico",
+        apple: "/favicon.ico",
     },
 };
 

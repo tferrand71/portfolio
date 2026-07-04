@@ -4,7 +4,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js_15-Black?style=for-the-badge\&logo=next.js\&logoColor=white)](https://nextjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge\&logo=tailwind-css\&logoColor=white)](https://tailwindcss.com/)
 
-Bienvenue sur le code source de mon portfolio personnel. Ce projet a été conçu pour refléter mon identité professionnelle à travers un design **"Luxury"** (thème sombre, accents dorés, typographie serif) tout en démontrant mes compétences techniques avancées en développement front-end et en intégration d'API.
+Bienvenue sur le code source de mon portfolio personnel. Ce projet a été conçu pour refléter mon identité professionnelle à travers un design **"Luxury"** (thème noir profond, typographie serif, accents Or et Rouge énergique) tout en démontrant mes compétences techniques avancées en développement front-end et en intégration d'API.
 
 ---
 
@@ -24,8 +24,9 @@ Bienvenue sur le code source de mon portfolio personnel. Ce projet a été conç
 
 ### 🎨 Design & Expérience Utilisateur (UX/UI)
 
-* **Thème Premium :** Palette de couleurs sur mesure (`rich-black`, `luxury-gold`) pour un rendu élégant et professionnel.
-* **Animations Fluides :** Utilisation de Framer Motion pour des transitions de pages douces et des apparitions d'éléments au défilement.
+* **Charte Graphique Premium :** Palette de couleurs sur mesure (`rich-black`, `luxury-gold`, touches de rouge) pour un rendu à la fois élégant et dynamique.
+* **Effets Visuels Avancés :** Intégration d'un composant exclusif `LogoVisualizer` générant une auréole énergétique multicouche animée en arrière-plan du logo.
+* **Animations Fluides :** Utilisation de Framer Motion pour des transitions de pages douces, des apparitions d'éléments au défilement et des effets de lumière dynamiques.
 * **Galerie Interactive :** Système de Lightbox (pop-up plein écran) sur-mesure pour les captures d'écran des projets, avec adaptation intelligente aux formats portrait et paysage.
 
 ### ⚙️ Intégration Dynamique & API
