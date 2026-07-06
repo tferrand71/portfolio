@@ -19,15 +19,15 @@ export default function NotFound() {
     const [gameOver, setGameOver] = useState(false);
     const [score, setScore] = useState(0);
     const [highScore, setHighScore] = useState(0);
-    
+
     // Rendu pour l'animation
     const [, setTick] = useState(0);
-    
+
     // Refs pour la physique (évite les lags de re-render React)
     const dinoRef = useRef({ y: GROUND_Y - DINO_HEIGHT, vy: 0, isDucking: false });
-    const obstaclesRef = useRef<{x: number, w: number, h: number, passed: boolean, type: number}[]>([]);
-    const particlesRef = useRef<{x: number, y: number, speed: number, size: number}[]>([]);
-    
+    const obstaclesRef = useRef<{ x: number, w: number, h: number, passed: boolean, type: number }[]>([]);
+    const particlesRef = useRef<{ x: number, y: number, speed: number, size: number }[]>([]);
+
     const frameRef = useRef<number>(0);
     const gameSpeed = useRef(6);
     const scoreRef = useRef(0);
@@ -45,7 +45,7 @@ export default function NotFound() {
             });
         }
         particlesRef.current = initialParticles;
-        
+
         // Charger le high score
         const saved = localStorage.getItem("dinoHighScore");
         if (saved) setHighScore(parseInt(saved));
@@ -76,12 +76,12 @@ export default function NotFound() {
             const currentGroundY = GROUND_Y - currentHeight;
 
             dino.vy += 0.8; // Gravité plus forte pour un saut plus sec
-            
+
             // Si on se baisse en l'air, on tombe plus vite
             if (dino.isDucking && dino.y < currentGroundY) {
-                dino.vy += 1.5; 
+                dino.vy += 1.5;
             }
-            
+
             dino.y += dino.vy;
 
             // Collision avec le sol
@@ -123,11 +123,11 @@ export default function NotFound() {
             // Faire apparaître de nouveaux obstacles
             const lastObs = obstaclesRef.current[obstaclesRef.current.length - 1];
             const minGap = 300 + (gameSpeed.current * 15);
-            
+
             if (!lastObs || (GAME_WIDTH - lastObs.x > minGap)) {
-                if (Math.random() < 0.04) { 
+                if (Math.random() < 0.04) {
                     const isFlying = Math.random() < 0.2 && scoreRef.current > 300; // Les ptérodactyles apparaissent plus tard
-                    
+
                     if (isFlying) {
                         // Oiseau / Ptérodactyle (Rouge)
                         const flyHeights = [GROUND_Y - 40, GROUND_Y - 70, GROUND_Y - 100];
@@ -148,7 +148,7 @@ export default function NotFound() {
             // --- COLLISIONS ---
             let hit = false;
             // Hitbox réduite pour être moins frustrant
-            const hitboxPadding = 5; 
+            const hitboxPadding = 5;
             const dinoLeft = 50 + hitboxPadding;
             const dinoRight = 50 + DINO_WIDTH - hitboxPadding;
             const dinoTop = dino.y + hitboxPadding;
@@ -184,17 +184,17 @@ export default function NotFound() {
                 setGameOver(true);
                 const finalScore = Math.floor(scoreRef.current);
                 setScore(finalScore);
-                
+
                 if (finalScore > highScore) {
                     setHighScore(finalScore);
                     localStorage.setItem("dinoHighScore", finalScore.toString());
                 }
-                return; 
+                return;
             }
 
             scoreRef.current += 0.1;
             setScore(Math.floor(scoreRef.current));
-            
+
             setTick(t => t + 1);
             frameRef.current = requestAnimationFrame(update);
         };
@@ -205,8 +205,8 @@ export default function NotFound() {
             if (e.code === 'Space' || e.code === 'ArrowUp') {
                 e.preventDefault();
                 const currentGroundY = GROUND_Y - (dinoRef.current.isDucking ? DINO_DUCK_HEIGHT : DINO_HEIGHT);
-                if (dinoRef.current.y >= currentGroundY - 1) { 
-                    dinoRef.current.vy = -14; 
+                if (dinoRef.current.y >= currentGroundY - 1) {
+                    dinoRef.current.vy = -14;
                 }
             }
             if (e.code === 'ArrowDown') {
@@ -223,7 +223,7 @@ export default function NotFound() {
 
         const handleTouchStart = () => {
             const currentGroundY = GROUND_Y - (dinoRef.current.isDucking ? DINO_DUCK_HEIGHT : DINO_HEIGHT);
-            if (dinoRef.current.y >= currentGroundY - 1) { 
+            if (dinoRef.current.y >= currentGroundY - 1) {
                 dinoRef.current.vy = -14;
             }
         };
@@ -244,7 +244,7 @@ export default function NotFound() {
     const renderDino = () => {
         const isJumping = dinoRef.current.y < GROUND_Y - DINO_HEIGHT - 5;
         const isDucking = dinoRef.current.isDucking;
-        
+
         if (isDucking) {
             return (
                 <div className="relative w-full h-full bg-[var(--color-gold)] rounded-sm shadow-[0_0_15px_var(--color-gold)]">
@@ -271,7 +271,7 @@ export default function NotFound() {
                 <div className="absolute top-[40%] left-0 w-[20%] h-[20%] bg-[var(--color-gold)]" />
                 {/* Petit bras */}
                 <div className="absolute top-[45%] right-[10%] w-[15%] h-[10%] bg-[var(--color-gold)]" />
-                
+
                 {/* Jambes (Animées) */}
                 <div className={`absolute bottom-0 left-[25%] w-[15%] h-[20%] bg-[var(--color-gold)] ${isJumping ? '' : (walkState.current ? 'hidden' : '')}`} />
                 <div className={`absolute bottom-0 left-[50%] w-[15%] h-[20%] bg-[var(--color-gold)] ${isJumping ? 'bottom-[5px]' : (!walkState.current ? 'hidden' : '')}`} />
@@ -295,7 +295,7 @@ export default function NotFound() {
             )}
         </div>
     );
-    
+
     const renderBird = () => (
         <div className="relative w-full h-full animate-pulse">
             {/* Aile haut/bas selon walkState pour faire battre les ailes */}
@@ -309,7 +309,7 @@ export default function NotFound() {
     return (
         <main className="min-h-screen flex flex-col bg-rich-black text-white relative overflow-hidden">
             <Navbar />
-            
+
             <div className="absolute top-1/4 -left-1/4 w-[60vw] h-[60vw] bg-[var(--color-mauve)]/10 rounded-full blur-[120px] pointer-events-none z-0" />
             <div className="absolute bottom-1/4 -right-1/4 w-[50vw] h-[50vw] bg-[var(--color-gold)]/10 rounded-full blur-[100px] pointer-events-none z-0" />
 
@@ -324,13 +324,13 @@ export default function NotFound() {
                                 exit={{ opacity: 0, scale: 0.9 }}
                                 transition={{ duration: 0.5 }}
                             >
-                                <h1 
+                                <h1
                                     className="text-[100px] md:text-[160px] font-serif font-bold text-[var(--color-gold)] mb-2 tracking-tighter leading-none"
                                     style={{ textShadow: '0 0 40px rgba(212, 175, 55, 0.4)' }}
                                 >
                                     404
                                 </h1>
-                                
+
                                 <h2 className="text-2xl md:text-4xl font-serif text-[var(--color-text-main)] mb-8 font-bold">
                                     Page introuvable
                                 </h2>
@@ -340,15 +340,15 @@ export default function NotFound() {
                                 </p>
 
                                 <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-                                    <Link 
-                                        href="/" 
+                                    <Link
+                                        href="/"
                                         className="inline-flex items-center gap-3 px-8 py-4 border border-[var(--color-glass-border)] text-[var(--color-text-main)] font-bold text-sm tracking-[0.2em] uppercase rounded-full hover:bg-[var(--color-glass)] hover:scale-105 transition-all duration-300"
                                     >
                                         <FaHome className="text-xl" />
                                         Accueil
                                     </Link>
-                                    
-                                    <button 
+
+                                    <button
                                         onClick={() => { setIsGaming(true); resetGame(); }}
                                         className="inline-flex items-center gap-3 px-8 py-4 bg-[var(--color-gold)] text-black font-bold text-sm tracking-[0.2em] uppercase rounded-full hover:bg-white hover:scale-105 transition-all duration-300 shadow-[0_0_30px_-5px_var(--color-gold)]"
                                     >
@@ -376,7 +376,7 @@ export default function NotFound() {
                                             </p>
                                         )}
                                     </div>
-                                    <button 
+                                    <button
                                         onClick={() => setIsGaming(false)}
                                         className="text-xs uppercase tracking-widest text-[var(--color-text-muted)] hover:text-white transition-colors border border-white/10 px-4 py-2 rounded-full"
                                     >
@@ -385,13 +385,13 @@ export default function NotFound() {
                                 </div>
 
                                 {/* FENÊTRE DU JEU */}
-                                <div 
+                                <div
                                     className={`bg-[#07050A] border border-[var(--color-glass-border)] relative overflow-hidden shadow-[inset_0_0_50px_rgba(0,0,0,0.9)] w-full max-w-[800px] rounded-xl transition-transform duration-75 ${gameOver ? 'scale-[0.98]' : ''}`}
                                     style={{ height: `${GAME_HEIGHT}px` }}
                                 >
                                     {/* Particules (Étoiles/Poussière) */}
                                     {particlesRef.current.map((p, i) => (
-                                        <div 
+                                        <div
                                             key={`p-${i}`}
                                             className="absolute bg-white/30 rounded-full"
                                             style={{
@@ -405,32 +405,32 @@ export default function NotFound() {
 
                                     {/* Ligne de sol texturée */}
                                     <div className="absolute bottom-5 w-full h-[2px] bg-gradient-to-r from-transparent via-[var(--color-gold)] to-transparent opacity-30" />
-                                    
+
                                     {/* Dino Player */}
-                                    <div 
+                                    <div
                                         className="absolute"
-                                        style={{ 
-                                            width: `${DINO_WIDTH}px`, 
-                                            height: `${dinoRef.current.isDucking ? DINO_DUCK_HEIGHT : DINO_HEIGHT}px`, 
-                                            left: '50px', 
+                                        style={{
+                                            width: `${DINO_WIDTH}px`,
+                                            height: `${dinoRef.current.isDucking ? DINO_DUCK_HEIGHT : DINO_HEIGHT}px`,
+                                            left: '50px',
                                             top: `${dinoRef.current.y}px`,
-                                        }} 
+                                        }}
                                     >
                                         {renderDino()}
                                     </div>
-                                    
+
                                     {/* Obstacles */}
                                     {obstaclesRef.current.map((obs, index) => (
-                                        <div 
+                                        <div
                                             key={index}
                                             className="absolute"
-                                            style={{ 
-                                                width: `${obs.w}px`, 
-                                                height: `${obs.h}px`, 
-                                                left: `${obs.x}px`, 
+                                            style={{
+                                                width: `${obs.w}px`,
+                                                height: `${obs.h}px`,
+                                                left: `${obs.x}px`,
                                                 top: obs.type === 2 ? `${obs.h}px` : undefined, // Si oiseau, h est la position Y
                                                 bottom: obs.type === 1 ? '20px' : undefined // Si cactus, fixé au sol
-                                            }} 
+                                            }}
                                         >
                                             {obs.type === 1 ? renderCactus(obs) : renderBird()}
                                         </div>
@@ -439,7 +439,7 @@ export default function NotFound() {
                                     {/* OVERLAY GAME OVER */}
                                     <AnimatePresence>
                                         {gameOver && (
-                                            <motion.div 
+                                            <motion.div
                                                 initial={{ opacity: 0, scale: 0.8 }}
                                                 animate={{ opacity: 1, scale: 1 }}
                                                 className="absolute inset-0 bg-black/60 backdrop-blur-sm flex flex-col items-center justify-center z-20"
@@ -447,7 +447,7 @@ export default function NotFound() {
                                                 <p className="text-[var(--color-red)] font-bold text-3xl md:text-5xl mb-6 uppercase tracking-widest font-serif drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]">
                                                     Game Over
                                                 </p>
-                                                <button 
+                                                <button
                                                     onClick={resetGame}
                                                     className="px-8 py-4 bg-[var(--color-gold)] text-black font-bold uppercase tracking-widest rounded-full text-sm hover:bg-white hover:scale-110 transition-all shadow-[0_0_30px_-5px_var(--color-gold)]"
                                                 >
@@ -457,7 +457,7 @@ export default function NotFound() {
                                         )}
                                     </AnimatePresence>
                                 </div>
-                                
+
                                 <div className="mt-6 flex flex-col items-center gap-2">
                                     <p className="text-xs md:text-sm uppercase tracking-widest text-[var(--color-text-main)] font-bold">
                                         Contrôles
