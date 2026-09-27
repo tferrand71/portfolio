@@ -1,0 +1,58 @@
+/* CV Creator — styles repris du projet Vite.
+   Les directives @tailwind du projet d'origine sont retirées : le portfolio
+   fait déjà tourner Tailwind, qui génère les classes utilisées ici.
+   Les règles sur body sont reportées sur .cv-root pour ne pas fuiter. */
+
+.cv-root {
+    background-color: #f3f4f6;
+    color: #1f2937;
+    height: 100vh;
+    overflow: hidden; /* évite le double scrollbar, sans toucher au <body> */
+}
+
+.cv-root .print-exact {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* La feuille A4 à l'écran */
+.cv-root .a4-screen {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    transform-origin: top center;
+}
+
+/* Règles spécifiques quand on clique sur « Télécharger PDF » */
+@media print {
+    @page {
+        margin: 0;
+        size: auto;
+    }
+
+    body {
+        background: white;
+    }
+
+    /* Masque l'interface (header, éditeur) et tout ce qui vient du portfolio */
+    .no-print {
+        display: none !important;
+    }
+
+    .cv-root {
+        height: auto;
+        overflow: visible;
+    }
+
+    .print-area {
+        display: block !important;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 0;
+        box-shadow: none;
+    }
+}
