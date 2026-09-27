@@ -39,3 +39,15 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# rapport d'audit local (contient des identifiants)
+rapport.md
+
+# ...sauf le fichier d'exemple, qui doit être versionné
+!.env.local.example
+
+# dumps temporaires de l'ancienne base (jamais versionnés)
+scripts/dump-*.json
+
+# dumps temporaires de l'ancienne base (jamais versionnés)
+scripts/dump-*.csv

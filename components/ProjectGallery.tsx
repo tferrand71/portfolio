@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Image from "next/image";
 
 interface ProjectGalleryProps {
     images?: string[];
@@ -25,13 +26,16 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
                         onClick={() => setSelectedImage(img)}
                         className="group relative h-48 sm:h-64 bg-white/5 rounded-xl border border-white/10 p-2 hover:border-luxury-gold/50 cursor-zoom-in transition-all duration-300"
                     >
-                        <img
-                            src={img}
-                            alt={`${title} - Aperçu ${index + 1}`}
-                            // object-contain permet aux images portrait de ne pas être rognées ni étirées
-                            className="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                        />
+                        <div className="relative w-full h-full">
+                            <Image
+                                src={img}
+                                alt={`${title} - Aperçu ${index + 1}`}
+                                fill
+                                // object-contain permet aux images portrait de ne pas être rognées ni étirées
+                                className="object-contain transform group-hover:scale-105 transition-transform duration-500"
+                                sizes="(max-width: 640px) 50vw, 33vw"
+                            />
+                        </div>
                     </div>
                 ))}
             </div>
@@ -51,12 +55,18 @@ export default function ProjectGallery({ images, title }: ProjectGalleryProps) {
                     </button>
 
                     {/* Image en grand */}
-                    <img
-                        src={selectedImage}
-                        alt={`${title} - Zoom`}
-                        className="max-w-full max-h-full object-contain rounded-lg shadow-2xl cursor-default"
+                    <div
+                        className="relative w-full h-full cursor-default"
                         onClick={(e) => e.stopPropagation()} // Empêche de fermer si on clique sur l'image elle-même
-                    />
+                    >
+                        <Image
+                            src={selectedImage}
+                            alt={`${title} - Zoom`}
+                            fill
+                            className="object-contain rounded-lg shadow-2xl"
+                            sizes="100vw"
+                        />
+                    </div>
                 </div>
             )}
         </div>

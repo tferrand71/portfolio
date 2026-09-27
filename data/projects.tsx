@@ -17,6 +17,7 @@ export interface Project {
     icon?: ReactNode;
     status?: string;
     gallery?: string[]; // <-- AJOUT DE LA PROPRIÉTÉ GALERIE
+    featured?: boolean; // Mis en avant sur la page d'accueil
 }
 
 export const projects: Project[] = [
@@ -29,7 +30,7 @@ export const projects: Project[] = [
         tech: [{ name: "React", icon: <FaReact />, color: "text-blue-400" }, { name: "JS", icon: <FaJs />, color: "text-yellow-400" }],
         links: { demo: "/cv-creator", repo: "" },
         gallery: [
-             "/images/cv-creator.png"
+            "/images/cv-creator.webp"
         ]
     },
     {
@@ -41,11 +42,12 @@ export const projects: Project[] = [
         tech: [{ name: "React", icon: <FaReact />, color: "text-blue-400" }, { name: "Flutter", icon: <SiFlutter />, color: "text-cyan-400" }],
         links: { demo: "/ideastorm", repo: "https://github.com/tferrand71/ideastorm2.0.git", download:"/download/IdeaStorm.apk" },
         gallery: [
-            "/images/IdeaStorm - connexion.png",
-            "/images/IdeaStorm - accueil.png",
-            "/images/IdeaStorm - boutique 1.png",
-            "/images/IdeaStorm - boutique 2.png",
-            "/images/IdeaStorm - boutique 3.png"
+            "/images/ideastorm-connexion.webp",
+            "/images/ideastorm-accueil.webp",
+            "/images/ideastorm-boutique-1.webp",
+            "/images/ideastorm-boutique-2.webp",
+            "/images/ideastorm-boutique-3.webp",
+            "/images/ideastorm-leaderboard.webp"
         ]
     },
     {
@@ -56,6 +58,7 @@ export const projects: Project[] = [
         longDescription: "Développement du site web pour l'association musicale Harmonie d'Épehy. L'objectif était de moderniser leur communication, de présenter l'agenda des concerts et de faciliter le recrutement de nouveaux musiciens via une interface élégante. L'application a été entièrement refondue avec Next.js pour de meilleures performances et un SEO optimisé.",
         tech: [{ name: "Next.js", icon: <SiNextdotjs />, color: "text-white" }, { name: "React", icon: <FaReact />, color: "text-blue-400" }, { name: "Tailwind", icon: <SiTailwindcss />, color: "text-cyan-400" }],
         links: { demo: "https://harmonie-epehy.fr" },
+        featured: true,
         icon: <FaMusic className="text-5xl text-luxury-gold" />,
         gallery: [
             // "/images/harmonie-1.jpg"
@@ -71,16 +74,16 @@ export const projects: Project[] = [
         links: { repo: "https://github.com/tferrand71/MakiApp.git" },
         status: "En cours",
         gallery: [
-            "/images/Maki - accueil.PNG",
-            "/images/Maki - collec.PNG",
-            "/images/Maki - Discovery.PNG",
-            "/images/Maki - ISBN.PNG",
-            "/images/Maki - profil.PNG",
-            "/images/Maki - profil 2.PNG",
-            "/images/Maki - profil 3.PNG",
-            "/images/Maki - progress.PNG",
-            "/images/Maki - progress 2.PNG",
-            "/images/Maki - search.PNG",
+            "/images/maki-accueil.webp",
+            "/images/maki-collec.webp",
+            "/images/maki-discovery.webp",
+            "/images/maki-isbn.webp",
+            "/images/maki-profil.webp",
+            "/images/maki-profil-2.webp",
+            "/images/maki-profil-3.webp",
+            "/images/maki-progress.webp",
+            "/images/maki-progress-2.webp",
+            "/images/maki-search.webp",
         ]
     },
     {
@@ -96,6 +99,7 @@ export const projects: Project[] = [
         ],
         links: { demo: "https://site-julien-next-js.vercel.app" },
         status: "Bientôt disponible",
+        featured: true,
         gallery: []
     }
 ];

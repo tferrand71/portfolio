@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     icons: {
         icon: "/favicon.ico",
         shortcut: "/favicon.ico",
-        apple: "/favicon.ico",
+        // iOS ignore le format .ico : il lui faut un PNG.
+        apple: "/apple-icon.png",
     },
 };
 

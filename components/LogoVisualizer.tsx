@@ -1,5 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function LogoVisualizer() {
     return (
@@ -51,10 +52,13 @@ export default function LogoVisualizer() {
                 <div className="w-full h-full rounded-full bg-[#1A1825] overflow-hidden border border-white/10 relative">
                     {/* Filtre assombrissant pour bien voir les couleurs */}
                     <div className="absolute inset-0 bg-black/20 z-10 rounded-full" />
-                    <img
-                        src="/images/image.png"
+                    <Image
+                        src="/images/logo.webp"
                         alt="Logo de Tobias Ferrand"
-                        className="w-full h-full object-cover mix-blend-screen opacity-90 relative z-0"
+                        fill
+                        priority
+                        sizes="(max-width: 768px) 256px, 384px"
+                        className="object-cover mix-blend-screen opacity-90 relative z-0"
                     />
                 </div>
             </div>

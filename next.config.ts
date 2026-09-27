@@ -1,27 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-    // Configuration optimisée pour Vercel (on retire l'export statique OVH)
-    async rewrites() {
-        return [
-            {
-                source: '/cv-creator',
-                destination: '/cv-creator/index.html',
-            },
-            {
-                source: '/cv-creator/',
-                destination: '/cv-creator/index.html',
-            },
-            {
-                source: '/ideastorm',
-                destination: '/ideastorm/index.html',
-            },
-            {
-                source: '/ideastorm/',
-                destination: '/ideastorm/index.html',
-            }
-        ];
-    }
+    // Les sous-projets sont désormais des routes Next à part entière
+    // (/ideastorm et /cv-creator) : plus aucune rewrite vers du HTML statique.
 };
 
 export default nextConfig;
