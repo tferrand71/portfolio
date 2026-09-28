@@ -20,41 +20,35 @@ export default function CourseModal({ repoName, repoUrl, onClose }: CourseModalP
     useEffect(() => {
         const fetchDetails = async () => {
             try {
-                // Configuration des en-têtes avec Token si présent
-                const baseHeaders: HeadersInit = {};
-                const readmeHeaders: HeadersInit = { Accept: "application/vnd.github.v3.raw" };
-
-                if (process.env.NEXT_PUBLIC_GITHUB_TOKEN) {
-                    baseHeaders.Authorization = `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`;
-                    readmeHeaders.Authorization = `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`;
+                // L'appel passe par une route interne : le jeton GitHub reste
+                // sur le serveur. Interroger GitHub directement d'ici imposait
+                // un jeton préfixé NEXT_PUBLIC_, donc publié dans le bundle.
+                const res = await fetch(`/api/cours/${encodeURIComponent(repoName)}`);
+                if (!res.ok) {
+                    setReadme("Impossible de charger les détails de ce dépôt.");
+                    return;
                 }
 
-                // 1. Récupérer les langages
-                const langRes = await fetch(`https://api.github.com/repos/l-Atelier-du-code/${repoName}/languages`, { headers: baseHeaders });
-                if (langRes.ok) {
-                    const langData = await langRes.json();
-                    const totalBytes = Object.values(langData).reduce((a: any, b: any) => a + b, 0) as number;
+                const { languages: langData, readme: readmeText } = await res.json();
 
-                    if (totalBytes > 0) {
-                        const langArray = Object.entries(langData).map(([name, bytes], index) => ({
+                const totalBytes = Object.values(langData ?? {}).reduce(
+                    (a: number, b) => a + (b as number),
+                    0
+                );
+
+                if (totalBytes > 0) {
+                    setLanguages(
+                        Object.entries(langData as Record<string, number>).map(([name, bytes], index) => ({
                             name,
-                            percent: Number((((bytes as number) / totalBytes) * 100).toFixed(1)),
-                            color: COLORS[index % COLORS.length]
-                        }));
-                        setLanguages(langArray);
-                    }
+                            percent: Number(((bytes / totalBytes) * 100).toFixed(1)),
+                            color: COLORS[index % COLORS.length],
+                        }))
+                    );
                 }
 
-                // 2. Récupérer le README
-                const readmeRes = await fetch(`https://api.github.com/repos/l-Atelier-du-code/${repoName}/readme`, { headers: readmeHeaders });
-                if (readmeRes.ok) {
-                    const readmeText = await readmeRes.text();
-                    setReadme(readmeText);
-                } else {
-                    setReadme("Aucun README trouvé pour ce dépôt.");
-                }
+                setReadme(readmeText || "Aucun README trouvé pour ce dépôt.");
             } catch (error) {
-                console.error("Erreur API GitHub:", error);
+                console.error("Erreur de chargement du dépôt :", error);
                 setReadme("Erreur lors du chargement des détails.");
             } finally {
                 setLoading(false);

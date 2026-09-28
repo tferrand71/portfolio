@@ -1,42 +1,40 @@
+import { GITHUB_ORG, GITHUB_REVALIDATE, githubHeaders, type GithubRepo } from "@/lib/github";
+
 import CoursClient from "./CoursClient";
 
 export default async function CoursPage() {
-    let initialRepos = [];
-    let errorMsg = null;
+    let initialRepos: GithubRepo[] = [];
+    let errorMsg: string | null = null;
 
     try {
-        const headers: HeadersInit = {};
-        if (process.env.NEXT_PUBLIC_GITHUB_TOKEN) {
-            headers.Authorization = `token ${process.env.NEXT_PUBLIC_GITHUB_TOKEN}`;
-        }
-
-        // Using next: { revalidate: 3600 } or force-cache to cache the request on the server
-        const res = await fetch("https://api.github.com/orgs/l-Atelier-du-code/repos?per_page=100", { 
-            headers,
-            next: { revalidate: 3600 } // Cache pendant 1 heure (ou force-cache selon le setup)
-        });
+        // Composant serveur : le jeton ne quitte jamais la machine.
+        const res = await fetch(
+            `https://api.github.com/orgs/${GITHUB_ORG}/repos?per_page=100`,
+            { headers: githubHeaders(), next: { revalidate: GITHUB_REVALIDATE } }
+        );
 
         if (!res.ok) {
-            if (res.status === 403) throw new Error("Limite d'API atteinte. Ajoutez un token ou attendez un peu.");
+            if (res.status === 401) throw new Error("Jeton GitHub invalide ou expiré.");
+            if (res.status === 403) throw new Error("Limite d'API atteinte, réessaie dans un moment.");
             if (res.status === 404) throw new Error("Dossier introuvable.");
             throw new Error("Erreur de récupération des données.");
         }
 
-        const data = await res.json();
-        const sortedData = data.sort((a: any, b: any) =>
-            new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime()
+        const data: GithubRepo[] = await res.json();
+        const sortedData = [...data].sort(
+            (a, b) => new Date(b.pushed_at).getTime() - new Date(a.pushed_at).getTime()
         );
 
-        initialRepos = sortedData.map((repo: any) => ({
+        initialRepos = sortedData.map((repo) => ({
             id: repo.id,
             name: repo.name,
             html_url: repo.html_url,
             description: repo.description,
             pushed_at: repo.pushed_at
         }));
-    } catch (error: any) {
+    } catch (error) {
         console.error("Erreur API GitHub côté serveur:", error);
-        errorMsg = error.message;
+        errorMsg = error instanceof Error ? error.message : "Erreur inconnue.";
     }
 
     return <CoursClient initialRepos={initialRepos} errorMsg={errorMsg} />;
