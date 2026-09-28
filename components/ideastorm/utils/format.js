@@ -8,14 +8,17 @@ export const formatNumber = (num) => {
     // On affiche l'entier simple (ex: 950)
     if (Math.abs(num) < 1000) return Math.floor(num).toString();
 
-    // 3. Cas Spéciaux (Noms Mythiques)
-    // Googol = 1e100
+    // 3. Un seul nom complet conservé : le Googol, assez célèbre pour mériter
+    //    d'échapper aux abréviations.
+    //
+    //    Le Centillion avait droit au même traitement, mais sa condition était
+    //    ouverte (`num >= 1e303`) alors que la table s'arrêtait à 1e300 : tout
+    //    ce qui dépassait était divisé par un Centillion, si bien qu'un score
+    //    au plafond s'affichait « 100000.00 Centillion ». La table couvre
+    //    désormais jusqu'à 1e306, et 1e303 s'écrit « 1.00 Ce » comme n'importe
+    //    quel autre palier.
     if (num >= 1e100 && num < 1e103) {
         return (num / 1e100).toFixed(2) + " Googol";
-    }
-    // Centillion = 1e303
-    if (num >= 1e303) {
-        return (num / 1e303).toFixed(2) + " Centillion";
     }
 
     // 4. Liste Complète des Suffixes Scientifiques (Short Scale)
@@ -31,7 +34,8 @@ export const formatNumber = (num) => {
         "Sxg", "USxg", "DSxg", "TSxg", "QaSxg", "QiSxg", "SxSxg", "SpSxg", "OcSxg", "NoSxg", // 183 à 210 (Sexagintillion...)
         "Spg", "USpg", "DSpg", "TSpg", "QaSpg", "QiSpg", "SxSpg", "SpSpg", "OcSpg", "NoSpg", // 213 à 240 (Septuagintillion...)
         "Ocg", "UOcg", "DOcg", "TOcg", "QaOcg", "QiOcg", "SxOcg", "SpOcg", "OcOcg", "NoOcg", // 243 à 270 (Octogintillion...)
-        "Nog", "UNog", "DNog", "TNog", "QaNog", "QiNog", "SxNog", "SpNog", "OcNog", "NoNog"  // 273 à 300 (Nonagintillion...)
+        "Nog", "UNog", "DNog", "TNog", "QaNog", "QiNog", "SxNog", "SpNog", "OcNog", "NoNog", // 273 à 300 (Nonagintillion...)
+        "Ce", "UCe" // 303 à 306 (Centillion, Uncentillion) — couvre jusqu'au plafond de 1e308
     ];
 
     // 5. Calcul de l'index du suffixe

@@ -53,7 +53,7 @@ app/
   (pages vitrine)          accueil, projets, veille, cours, contact, pages légales
   ideastorm/page.tsx       jeu incrémental      → components/ideastorm/
   cv-creator/page.tsx      éditeur de CV        → components/cv-creator/
-  api/ideastorm/*          8 Route Handlers
+  api/ideastorm/*          9 Route Handlers (dont /me : qui est connecté)
   api/cv/*                 4 Route Handlers
 lib/
   session.ts               fabrique de session partagée (JWT + cookie httpOnly)
@@ -68,10 +68,11 @@ Chacune vient d'un projet Vite (`~/docker-web/www/{ideastorm,cv-creator}`) et su
 
 1. La page est un Client Component qui charge l'app via `dynamic(..., { ssr: false })` — ces apps
    utilisent `localStorage`, `HashRouter` et des boucles d'animation, rien n'est prérendable.
-2. **Le CSS du projet d'origine est scopé** sous `.ideastorm-root` / `.cv-root`. Les feuilles
+2. **Le CSS des deux démos est scopé** sous `.ideastorm-root` / `.cv-root`. Les feuilles
    d'origine définissaient `*`, `body`, `#root`, `h1`, `p`, `input`, `button`, `table` : importées
    telles quelles, elles détruisent la charte du portfolio. `components/ideastorm/ideastorm.css`
-   est **généré** depuis la source Vite, ne pas l'éditer à la main.
+   n'est plus généré depuis Vite (le jeu a été réécrit) : il s'édite directement, toutes ses
+   classes sont préfixées `is-`.
 3. Le backend PHP d'origine est remplacé par des Route Handlers. **Vercel n'exécute pas le PHP** :
    tout fichier `.php` déposé dans `public/` est servi en texte brut, code source et identifiants
    compris.
@@ -102,6 +103,14 @@ Le pool est créé paresseusement (`lib/ideastorm/db.ts`) — à l'import, `next
 faute de `DATABASE_URL`.
 
 `score` est en `NUMERIC` et non `BIGINT` : IdeaStorm monte jusqu'à 1e300.
+
+**Format de sauvegarde IdeaStorm.** `ideastorm_game_state.save_data` ne contient que ce qui ne se
+déduit pas : `owned` (nombre d'exemplaires par amélioration), `grantedPerClick`/`grantedPerSecond`
+(puissance accordée par un admin), `rebirthCount`. Prix et production sont recalculés par
+`components/ideastorm/lib/engine.js`. L'ancien format, qui stockait le prix courant de chaque
+palier, est repris automatiquement par `migrateSave()` ; les parties d'avant le 27/09/2026 sont
+copiées dans `ideastorm_game_state_sauvegarde_20260927` (table à supprimer une fois la reprise
+confirmée).
 
 ### Déploiement
 

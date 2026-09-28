@@ -1,108 +1,52 @@
-import React from "react";
-import useStore from "../store/useStore";
+import React, { useMemo } from "react";
+import Image from "next/image";
 
-// =========================================================
-// IMPORTS (Noms exacts des fichiers)
-// =========================================================
-const chatDebile = "/ideastorm-media/chat-debile.webp";
-const chatMimir = "/ideastorm-media/mimir.mp4";
-const chatSeducteur = "/ideastorm-media/seducteur.mp4";
-const volcanPistolet = "/ideastorm-media/pistolet.mp4";
-const oieGoose = "/ideastorm-media/goose.mp4";
+import { COMPANIONS } from "../data/upgrades.js";
+import useStore from "../store/useStore.js";
 
+/** Un emplacement d'écran par compagnon, pour qu'ils ne se recouvrent pas. */
+const SLOTS = {
+    catUpgradeCost: "is-media--bl",
+    cat2UpgradeCost: "is-media--br",
+    volcanCost: "is-media--ml",
+    cat3UpgradeCost: "is-media--tl",
+    gooseCost: "is-media--tr",
+};
 
+/** Affiche les compagnons achetés, en décoration : jamais cliquables. */
 export default function MediaOverlay() {
-    const { catBought, cat2Bought, cat3Bought, volcanBought, gooseBought } = useStore();
+    // `owned` ne change qu'à l'achat : la liste dérivée reste stable entre
+    // deux tics de score, contrairement à un sélecteur qui filtrerait.
+    const owned = useStore((s) => s.owned);
+    const companions = useMemo(() => COMPANIONS.filter((c) => owned[c.id]), [owned]);
+
+    if (companions.length === 0) return null;
 
     return (
-        <div className="media-overlay-container" style={{
-            position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-            pointerEvents: 'none', zIndex: 5, overflow: 'hidden'
-        }}>
-
-            {/* --- GAUCHE --- */}
-
-            {/* 1. HAUT GAUCHE : Chat 3 (Roi) */}
-            {cat3Bought && (
-                <video
-                    src={chatSeducteur}
-                    autoPlay loop muted playsInline
-                    style={{
-                        position: 'absolute',
-                        top: '120px', // Décalé pour éviter le Header
-                        left: '20px',
-                        width: '160px',
-                        borderRadius: '50%',
-                        border: '3px solid gold',
-                        boxShadow: '0 0 15px rgba(255, 215, 0, 0.5)'
-                    }}
-                />
-            )}
-
-            {/* 2. BAS GAUCHE : Chat 1 (Débile) */}
-            {catBought && (
-                <img
-                    src={chatDebile}
-                    alt="Chat Débile"
-                    style={{
-                        position: 'absolute',
-                        bottom: '20px',
-                        left: '20px',
-                        width: '130px'
-                    }}
-                />
-            )}
-
-
-            {/* --- DROITE --- */}
-
-            {/* 3. HAUT DROITE : L'Oie */}
-            {gooseBought && (
-                <video
-                    src={oieGoose}
-                    autoPlay loop muted playsInline
-                    style={{
-                        position: 'absolute',
-                        top: '120px', // Décalé pour le Header
-                        right: '20px',
-                        width: '140px',
-                        borderRadius: '10px'
-                    }}
-                />
-            )}
-
-            {/* 4. MILIEU DROITE : Volcan (Pistolet) */}
-            {/* Déplacé à droite pour ne pas gêner le chat roi ou débile à gauche */}
-            {volcanBought && (
-                <div style={{
-                    position: 'absolute',
-                    top: '50%',
-                    right: '20px',
-                    transform: 'translateY(-50%)'
-                }}>
+        <div className="is-media-layer" aria-hidden="true">
+            {companions.map((c) =>
+                c.media.type === "video" ? (
                     <video
-                        src={volcanPistolet}
-                        autoPlay loop muted playsInline
-                        style={{ width: '150px', borderRadius: '10px' }}
+                        key={c.id}
+                        className={`is-media ${SLOTS[c.id] ?? "is-media--br"}`}
+                        src={c.media.src}
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
                     />
-                </div>
+                ) : (
+                    <Image
+                        key={c.id}
+                        className={`is-media ${SLOTS[c.id] ?? "is-media--bl"}`}
+                        src={c.media.src}
+                        alt=""
+                        width={140}
+                        height={140}
+                        unoptimized
+                    />
+                )
             )}
-
-            {/* 5. BAS DROITE : Chat 2 (Mimir) */}
-            {cat2Bought && (
-                <video
-                    src={chatMimir}
-                    autoPlay loop muted playsInline
-                    style={{
-                        position: 'absolute',
-                        bottom: '20px',
-                        right: '20px',
-                        width: '160px',
-                        borderRadius: '10px'
-                    }}
-                />
-            )}
-
         </div>
     );
 }

@@ -16,7 +16,16 @@ export async function POST(request: Request) {
     }
 
     const userId = Number(body.user_id);
-    const score = Number(body.score);
+    // `JSON.stringify` transforme Infinity et NaN en `null`. `Number(null)`
+    // vaut 0 : une partie dont le score aurait débordé côté client était donc
+    // enregistrée à zéro, sans erreur. On exige un vrai nombre.
+    const rawScore = body.score;
+    const score =
+        typeof rawScore === "number"
+            ? rawScore
+            : typeof rawScore === "string" && rawScore.trim() !== ""
+              ? Number(rawScore)
+              : Number.NaN;
     if (!Number.isInteger(userId)) return NextResponse.json({ error: "Identifiant invalide." }, { status: 400 });
     if (!Number.isFinite(score) || score < 0) return NextResponse.json({ error: "Score invalide." }, { status: 400 });
 
@@ -24,10 +33,17 @@ export async function POST(request: Request) {
     const rebirthCount = Number((saveData as { rebirthCount?: unknown }).rebirthCount ?? 0);
 
     try {
+        // UPDATE seul ne touchait aucune ligne quand la partie n'existait pas
+        // encore, tout en répondant « success » : l'écriture était perdue en
+        // silence. L'upsert crée la ligne au lieu de faire semblant.
         await query(
-            `UPDATE ideastorm_game_state
-             SET save_data = $1::jsonb, score = $2, rebirth_count = $3, updated_at = NOW()
-             WHERE user_id = $4`,
+            `INSERT INTO ideastorm_game_state (user_id, save_data, score, rebirth_count, updated_at)
+             VALUES ($4, $1::jsonb, $2, $3, NOW())
+             ON CONFLICT (user_id) DO UPDATE
+             SET save_data = EXCLUDED.save_data,
+                 score = EXCLUDED.score,
+                 rebirth_count = EXCLUDED.rebirth_count,
+                 updated_at = NOW()`,
             [JSON.stringify(saveData), score, Number.isInteger(rebirthCount) ? rebirthCount : 0, userId]
         );
         return NextResponse.json({ success: true });
