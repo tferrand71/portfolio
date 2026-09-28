@@ -10,7 +10,10 @@ interface Repo {
     id: number;
     name: string;
     html_url: string;
-    description: string;
+    // GitHub renvoie null pour un dépôt sans description. Le type annonçait
+    // `string`, ce que le `any` du composant serveur masquait ; l'affichage
+    // gérait déjà le cas avec un `||`.
+    description: string | null;
     pushed_at: string;
 }
 

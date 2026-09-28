@@ -1,177 +1,113 @@
-import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import useStore from "../store/useStore";
-import { signOut } from "../utils/api";
+import React from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+
+import useStore from "../store/useStore.js";
+
+/** Indique si la partie est à jour en base, sans jamais bloquer le jeu. */
+function SaveIndicator() {
+    const saving = useStore((s) => s.saving);
+    const dirty = useStore((s) => s.dirty);
+    const saveError = useStore((s) => s.saveError);
+
+    const { modifier, label } = saveError
+        ? { modifier: "is-save-dot--error", label: "Sauvegarde en échec" }
+        : saving || dirty
+          ? { modifier: "is-save-dot--pending", label: "Sauvegarde en cours" }
+          : { modifier: "", label: "Partie sauvegardée" };
+
+    return <span className={`is-save-dot ${modifier}`} title={label} role="status" aria-label={label} />;
+}
 
 export default function Header() {
-    const { user, setUser } = useStore();
+    const user = useStore((s) => s.user);
+    const signOut = useStore((s) => s.signOut);
+    const showMedia = useStore((s) => s.showMedia);
+    const hasTrophy = useStore((s) => s.hasSeenEasterEgg);
+    const toggleMedia = useStore((s) => s.toggleMedia);
+    const toast = useStore((s) => s.toast);
     const navigate = useNavigate();
-    const [isAdmin, setIsAdmin] = useState(false);
 
-    // Vérification du statut Admin basée sur le pseudo stocké dans useStore
-    useEffect(() => {
-        if (user && user.role === "admin") {
-            setIsAdmin(true);
-        } else {
-            setIsAdmin(false);
-        }
-    }, [user]);
-
-    const handleLogout = async () => {
-        try {
-            // Le serveur efface le cookie de session ; on ne bloque pas l'utilisateur si ça échoue.
-            await signOut();
-        } catch (e) {
-            console.warn("Déconnexion serveur impossible, on nettoie quand même côté client.");
-        } finally {
-            setUser(null);
-            navigate('/');
-        }
+    const handleSignOut = async () => {
+        await signOut();
+        toast("À bientôt !", "info");
+        navigate("/login");
     };
 
+    const linkClass = ({ isActive }) => `is-nav-link${isActive ? " is-active" : ""}`;
+
     return (
-        <header style={headerStyle}>
-            <div style={logoStyle}>
-                <Link to="/" style={{ color: "white", textDecoration: "none" }}>
-                    <h2>IdeaStorm</h2>
-                </Link>
-            </div>
+        <header className="is-header">
+            <NavLink to="/" className="is-brand">
+                <span className="is-brand-mark" aria-hidden="true">
+                    ◆
+                </span>
+                IdeaStorm
+            </NavLink>
 
-            <nav style={navStyle}>
-                <Link to="/" style={linkStyle}>Accueil</Link>
-                <Link to="/pages" style={linkStyle}>Boutique</Link>
-                <Link to="/leaderboard" style={linkStyle}>Leaderboard</Link>
+            {user && (
+                <nav className="is-nav">
+                    <NavLink to="/" end className={linkClass}>
+                        Jeu
+                    </NavLink>
+                    <NavLink to="/boutique" className={linkClass}>
+                        Boutique
+                    </NavLink>
+                    <NavLink to="/classement" className={linkClass}>
+                        Classement
+                    </NavLink>
+                    {/* Le rôle vient du cookie de session, vérifié à nouveau côté
+                        serveur sur chaque route admin : masquer ce lien n'est
+                        qu'un confort d'affichage, pas un contrôle d'accès. */}
+                    {user.role === "admin" && (
+                        <NavLink to="/admin" className={({ isActive }) => `${linkClass({ isActive })} is-nav-link--admin`}>
+                            Admin
+                        </NavLink>
+                    )}
+                </nav>
+            )}
 
-                {/* Bouton Admin visible uniquement pour l'utilisateur Letotoo06 */}
-                {isAdmin && (
-                    <Link to="/admin" style={adminLinkStyle}>
-                        🛠️ ADMIN
-                    </Link>
-                )}
-            </nav>
-
-            <div style={userStyle}>
+            <div className="is-header-right">
                 {user ? (
                     <>
-                        <div style={userInfoStyle}>
-                            <div style={avatarStyle}>
-                                {user.username ? user.username.charAt(0).toUpperCase() : "U"}
-                            </div>
-                            <span style={usernameDisplayStyle}>{user.username}</span>
-                        </div>
-                        <button onClick={handleLogout} style={logoutBtn}>Déconnexion</button>
+                        <SaveIndicator />
+                        {hasTrophy && (
+                            <span
+                                className="is-trophy"
+                                title="Cartographe du Grand Tout — boutique entièrement vidée"
+                                aria-label="Cartographe du Grand Tout"
+                            >
+                                👑
+                            </span>
+                        )}
+                        <button
+                            type="button"
+                            onClick={toggleMedia}
+                            className="is-btn is-btn--ghost is-btn--sm"
+                            aria-pressed={showMedia}
+                            title={showMedia ? "Masquer les décorations" : "Afficher les décorations"}
+                            style={{ padding: "5px 9px" }}
+                        >
+                            {showMedia ? "👁️" : "🚫"}
+                        </button>
+                        <span className="is-avatar" aria-hidden="true">
+                            {user.username.charAt(0).toUpperCase()}
+                        </span>
+                        <span className="is-username">{user.username}</span>
+                        <button type="button" onClick={handleSignOut} className="is-btn is-btn--ghost is-btn--sm">
+                            Quitter
+                        </button>
                     </>
                 ) : (
-                    <div style={authButtonsStyle}>
-                        <Link to="/login" style={btnStyle}>Connexion</Link>
-                        <Link to="/signup" style={btnStyle}>Inscription</Link>
-                    </div>
+                    <>
+                        <NavLink to="/login" className="is-btn is-btn--ghost is-btn--sm">
+                            Connexion
+                        </NavLink>
+                        <NavLink to="/signup" className="is-btn is-btn--primary is-btn--sm">
+                            Inscription
+                        </NavLink>
+                    </>
                 )}
             </div>
         </header>
     );
 }
-
-/* ----------------- STYLES AMÉLIORÉS ----------------- */
-const headerStyle = {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "0 30px",
-    backgroundColor: "#1a1a2e",
-    color: "white",
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    height: "70px",
-    zIndex: 1000,
-    boxShadow: "0 4px 10px rgba(0,0,0,0.3)",
-    borderBottom: "1px solid rgba(255,255,255,0.1)"
-};
-
-const logoStyle = {
-    fontSize: "24px",
-    fontWeight: "bold",
-};
-
-const navStyle = {
-    display: "flex",
-    gap: "25px",
-    alignItems: "center",
-};
-
-const linkStyle = {
-    color: "#e0e0e0",
-    textDecoration: "none",
-    fontWeight: "500",
-    fontSize: "16px",
-    transition: "color 0.2s",
-};
-
-const adminLinkStyle = {
-    color: "#ff4757",
-    textDecoration: "none",
-    fontWeight: "bold",
-    border: "2px solid #ff4757",
-    padding: "6px 12px",
-    borderRadius: "20px",
-    fontSize: "0.85rem",
-    backgroundColor: "rgba(255, 71, 87, 0.1)",
-    transition: "all 0.3s ease",
-};
-
-const userStyle = {
-    display: "flex",
-    alignItems: "center",
-    gap: "15px",
-};
-
-const userInfoStyle = {
-    display: "flex",
-    alignItems: "center",
-    gap: "10px",
-};
-
-const usernameDisplayStyle = {
-    fontWeight: "600",
-    fontSize: "14px",
-    color: "#ff6f61"
-};
-
-const avatarStyle = {
-    width: "38px",
-    height: "38px",
-    borderRadius: "50%",
-    backgroundColor: "#e94560",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    fontWeight: "bold",
-    color: "white",
-    fontSize: "16px",
-    boxShadow: "0 2px 5px rgba(0,0,0,0.2)"
-};
-
-const authButtonsStyle = {
-    display: "flex",
-    gap: "10px",
-};
-
-const btnStyle = {
-    backgroundColor: "#0f3460",
-    color: "white",
-    padding: "8px 16px",
-    borderRadius: "6px",
-    textDecoration: "none",
-    fontWeight: "600",
-    fontSize: "14px",
-    transition: "background-color 0.2s",
-};
-
-const logoutBtn = {
-    ...btnStyle,
-    backgroundColor: "#e94560",
-    border: "none",
-    cursor: "pointer",
-};

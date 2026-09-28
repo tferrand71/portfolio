@@ -1,252 +1,295 @@
-import React, { useEffect, useState } from 'react';
-import useStore from '../store/useStore';
-import { useNavigate } from 'react-router-dom';
+import React, { useCallback, useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 
-export default function AdminPage() {
-    const { user } = useStore();
-    const navigate = useNavigate();
-    const [players, setPlayers] = useState([]);
+import { COMPANIONS } from "../data/upgrades.js";
+import { clampScore, migrateSave, serializeSave, withPerClick, withPerSecond } from "../lib/engine.js";
+import useStore from "../store/useStore.js";
+import * as api from "../utils/api.js";
+import { formatNumber } from "../utils/format.js";
 
-    // État pour stocker toutes les données du joueur en cours de modification
-    const [selectedUser, setSelectedUser] = useState(null);
+/**
+ * Champ numérique acceptant la notation scientifique (1e300).
+ *
+ * Un <input type="number"> refuse « 1e300 » dans plusieurs navigateurs et
+ * renvoie une chaîne vide : le panneau d'origine écrivait alors 0 dans la
+ * partie du joueur. On garde donc un champ texte et on convertit nous-mêmes.
+ */
+function BigNumberField({ id, label, value, onChange, disabled }) {
+    // Pas d'effet de synchronisation : hors saisie, le champ affiche
+    // directement la valeur du parent ; pendant la saisie, le brouillon local
+    // fait foi pour que « 1e » ne soit pas réécrit avant d'être terminé.
+    const [draft, setDraft] = useState(null);
+    const shown = draft ?? String(value);
 
-    // Adapte si besoin selon ta configuration
-    const API_URL = "/api/ideastorm";
-
-    useEffect(() => {
-        if (!user || user.role !== "admin") {
-            navigate('/');
-        } else {
-            loadPlayers();
-        }
-    }, [user, navigate]);
-
-    const loadPlayers = async () => {
-        try {
-            const res = await fetch(`${API_URL}/admin/users`);
-            const data = await res.json();
-            setPlayers(Array.isArray(data) ? data : []);
-        } catch (err) {
-            console.error("Erreur chargement joueurs:", err);
-        }
+    const commit = (text) => {
+        setDraft(text);
+        const parsed = Number(text);
+        if (Number.isFinite(parsed) && parsed >= 0) onChange(parsed);
     };
 
-    // 1. Ouvrir le profil d'un joueur et charger sa SAUVEGARDE COMPLÈTE
-    const handleSelectUser = async (player) => {
-        try {
-            const res = await fetch(`${API_URL}/load?userId=${player.id}`);
-            const saveData = await res.json() || {};
+    const invalid = !Number.isFinite(Number(shown)) || Number(shown) < 0;
 
-            // On fusionne les infos de base et sa sauvegarde
-            setSelectedUser({
-                id: player.id,
-                username: player.username,
-                score: player.score || saveData.score || 0,
-                rebirthCount: player.rebirth_count || saveData.rebirthCount || 0,
-                perClick: saveData.perClick || 1,
-                perSecond: saveData.perSecond || 0,
-                catBought: saveData.catBought || false,
-                cat2Bought: saveData.cat2Bought || false,
-                volcanBought: saveData.volcanBought || false,
-                cat3Bought: saveData.cat3Bought || false,
-                gooseBought: saveData.gooseBought || false,
-                rawSaveData: saveData // On garde le reste (prix des upgrades, etc.) intact
-            });
-        } catch (err) {
-            console.error("Erreur chargement sauvegarde:", err);
-            alert("Impossible de charger la sauvegarde détaillée du joueur.");
-        }
-    };
-
-    // 2. Sauvegarder les modifications en écrasant la sauvegarde du joueur
-    const handleSaveUser = async () => {
-        if (!selectedUser) return;
-
-        // On recrée l'objet de sauvegarde exact que le jeu utilise
-        const updatedSaveData = {
-            ...selectedUser.rawSaveData,
-            score: selectedUser.score,
-            rebirthCount: selectedUser.rebirthCount,
-            perClick: selectedUser.perClick,
-            perSecond: selectedUser.perSecond,
-            catBought: selectedUser.catBought,
-            cat2Bought: selectedUser.cat2Bought,
-            volcanBought: selectedUser.volcanBought,
-            cat3Bought: selectedUser.cat3Bought,
-            gooseBought: selectedUser.gooseBought
-        };
-
-        try {
-            const response = await fetch(`${API_URL}/admin/stats`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: selectedUser.id,
-                    score: selectedUser.score,
-                    save_data: updatedSaveData // On écrase l'inventaire complet !
-                })
-            });
-
-            const result = await response.json();
-            if (result.success) {
-                alert(`✅ Sauvegarde de ${selectedUser.username} modifiée avec succès !`);
-                setSelectedUser(null);
-                loadPlayers(); // On rafraîchit la liste
-            } else {
-                alert("Erreur lors de la sauvegarde : " + (result.error || "Inconnue"));
-            }
-        } catch (err) {
-            console.error("Erreur réseau:", err);
-            alert("Erreur réseau lors de la sauvegarde.");
-        }
-    };
-
-    // --- Fonctions utilitaires pour les boutons ---
-    const updateField = (field, value) => setSelectedUser(prev => ({ ...prev, [field]: value }));
-    const addField = (field, amount) => setSelectedUser(prev => ({ ...prev, [field]: prev[field] + amount }));
-
-    // ==========================================
-    // VUE 1 : LE TABLEAU DE BORD DU JOUEUR SÉLECTIONNÉ
-    // ==========================================
-    if (selectedUser) {
-        return (
-            <div style={styles.container}>
-                <button onClick={() => setSelectedUser(null)} style={styles.backBtn}>🔙 Retour à la liste</button>
-                <h1 style={styles.title}>⚙️ GESTION : <span style={{color: '#e94560'}}>{selectedUser.username}</span></h1>
-
-                <div style={styles.panelGrid}>
-
-                    {/* SECTION 1 : RESSOURCES DE BASE */}
-                    <div style={styles.card}>
-                        <h3 style={styles.cardTitle}>💰 Score & Rebirth</h3>
-                        <label style={styles.label}>Score Actuel</label>
-                        <input type="number" value={selectedUser.score} onChange={e => updateField('score', parseFloat(e.target.value) || 0)} style={styles.inputFull} />
-                        <div style={styles.btnGroup}>
-                            <button onClick={() => addField('score', 1e6)} style={styles.addBtn}>+1 Million</button>
-                            <button onClick={() => addField('score', 1e9)} style={styles.addBtn}>+1 Milliard</button>
-                            <button onClick={() => addField('score', 1e12)} style={styles.addBtn}>+1 Trillion</button>
-                        </div>
-
-                        <label style={styles.label}>Niveau de Rebirth</label>
-                        <input type="number" value={selectedUser.rebirthCount} onChange={e => updateField('rebirthCount', parseInt(e.target.value) || 0)} style={styles.inputFull} />
-                        <div style={styles.btnGroup}>
-                            <button onClick={() => addField('rebirthCount', 1)} style={{...styles.addBtn, background: 'gold', color: 'black'}}>+1 Rebirth</button>
-                        </div>
-                    </div>
-
-                    {/* SECTION 2 : PUISSANCE (CLIC & AUTO) */}
-                    <div style={styles.card}>
-                        <h3 style={styles.cardTitle}>⚡ Puissance</h3>
-
-                        <label style={styles.label}>Points par Clic</label>
-                        <input type="number" value={selectedUser.perClick} onChange={e => updateField('perClick', parseFloat(e.target.value) || 0)} style={styles.inputFull} />
-                        <div style={styles.btnGroup}>
-                            <button onClick={() => addField('perClick', 1000)} style={styles.addBtn}>+1k Clic</button>
-                            <button onClick={() => addField('perClick', 100000)} style={styles.addBtn}>+100k Clic</button>
-                            <button onClick={() => addField('perClick', 10000000)} style={styles.addBtn}>+10M Clic</button>
-                        </div>
-
-                        <label style={styles.label}>Points par Seconde (Auto)</label>
-                        <input type="number" value={selectedUser.perSecond} onChange={e => updateField('perSecond', parseFloat(e.target.value) || 0)} style={styles.inputFull} />
-                        <div style={styles.btnGroup}>
-                            <button onClick={() => addField('perSecond', 1000)} style={styles.addBtn}>+1k Auto</button>
-                            <button onClick={() => addField('perSecond', 100000)} style={styles.addBtn}>+100k Auto</button>
-                            <button onClick={() => addField('perSecond', 10000000)} style={styles.addBtn}>+10M Auto</button>
-                        </div>
-                    </div>
-
-                    {/* SECTION 3 : INVENTAIRE & COMPAGNONS */}
-                    <div style={styles.card}>
-                        <h3 style={styles.cardTitle}>🐾 Compagnons Débloqués</h3>
-                        <div style={styles.companionList}>
-                            <label style={styles.checkLabel}>
-                                <input type="checkbox" checked={selectedUser.catBought} onChange={e => updateField('catBought', e.target.checked)} style={styles.checkbox} /> 🤪 Chat Débile
-                            </label>
-                            <label style={styles.checkLabel}>
-                                <input type="checkbox" checked={selectedUser.cat2Bought} onChange={e => updateField('cat2Bought', e.target.checked)} style={styles.checkbox} /> 🥷 Chat Ninja
-                            </label>
-                            <label style={styles.checkLabel}>
-                                <input type="checkbox" checked={selectedUser.volcanBought} onChange={e => updateField('volcanBought', e.target.checked)} style={styles.checkbox} /> 🔫 Chat Tueur
-                            </label>
-                            <label style={styles.checkLabel}>
-                                <input type="checkbox" checked={selectedUser.cat3Bought} onChange={e => updateField('cat3Bought', e.target.checked)} style={styles.checkbox} /> 👑 Roi Chat
-                            </label>
-                            <label style={styles.checkLabel}>
-                                <input type="checkbox" checked={selectedUser.gooseBought} onChange={e => updateField('gooseBought', e.target.checked)} style={styles.checkbox} /> 🪿 L'Oie d'Or
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                {/* BOUTON SAUVEGARDE GLOBAL */}
-                <div style={{ textAlign: 'center', marginTop: '40px', paddingBottom: '50px' }}>
-                    <button onClick={handleSaveUser} style={styles.bigSaveBtn}>💾 SAUVEGARDER LE JOUEUR</button>
-                </div>
-            </div>
-        );
-    }
-
-    // ==========================================
-    // VUE 2 : LISTE DE TOUS LES JOUEURS
-    // ==========================================
     return (
-        <div style={styles.container}>
-            <h1 style={styles.title}>🛡️ ADMIN GOD MODE</h1>
-
-            <table style={styles.table}>
-                <thead>
-                <tr style={styles.thead}>
-                    <th style={{paddingLeft: '15px'}}>Joueur</th>
-                    <th>Score</th>
-                    <th>Rebirths</th>
-                    <th style={{textAlign: 'center'}}>Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                {players.map(p => (
-                    <tr key={p.id} style={styles.tr}>
-                        <td style={styles.username}>{p.username}</td>
-                        <td style={{color: '#a29bfe', fontWeight: 'bold'}}>{parseFloat(p.score).toLocaleString()}</td>
-                        <td style={{color: 'gold', fontWeight: 'bold'}}>✨ {p.rebirth_count}</td>
-                        <td style={{textAlign: 'center', padding: '10px'}}>
-                            <button onClick={() => handleSelectUser(p)} style={styles.manageBtn}>⚙️ Gérer</button>
-                        </td>
-                    </tr>
-                ))}
-                </tbody>
-            </table>
+        <div className="is-field">
+            <label className="is-label" htmlFor={id}>
+                {label}
+            </label>
+            <input
+                id={id}
+                value={shown}
+                onChange={(e) => commit(e.target.value)}
+                onBlur={() => setDraft(null)}
+                disabled={disabled}
+                inputMode="decimal"
+                spellCheck={false}
+                style={invalid ? { borderColor: "var(--is-danger)" } : undefined}
+            />
+            <p className="is-hint">
+                {invalid ? "Nombre invalide." : `= ${formatNumber(Number(shown))}`} — notation
+                scientifique acceptée (1e30).
+            </p>
         </div>
     );
 }
 
-// ==========================================
-// STYLES
-// ==========================================
-const styles = {
-    container: { padding: '40px 20px', maxWidth: '1200px', margin: '0 auto', color: 'white', fontFamily: 'Arial, sans-serif' },
-    title: { textAlign: 'center', color: '#4CAF50', marginBottom: '40px', textTransform: 'uppercase', letterSpacing: '2px', textShadow: '0 0 10px rgba(76, 175, 80, 0.5)' },
+/** Édition d'une partie. L'état local est un état de jeu complet, pas un
+ *  agrégat de champs : on réutilise donc exactement le moteur du jeu. */
+function PlayerEditor({ player, onBack, onSaved }) {
+    const toast = useStore((s) => s.toast);
+    const resyncFromServer = useStore((s) => s.resyncFromServer);
+    const isSelf = useStore((s) => s.user?.id === player.id);
+    const [state, setState] = useState(null);
+    const [status, setStatus] = useState("loading");
+    const [busy, setBusy] = useState(false);
 
-    // Liste
-    table: { width: '100%', borderCollapse: 'collapse', background: '#16213e', borderRadius: '12px', overflow: 'hidden', boxShadow: '0 8px 30px rgba(0,0,0,0.5)' },
-    thead: { background: '#0f3460', color: '#4CAF50', textAlign: 'left', height: '55px', textTransform: 'uppercase', fontSize: '0.9rem' },
-    tr: { borderBottom: '1px solid rgba(255,255,255,0.05)', height: '65px', transition: '0.2s', ':hover': { background: '#1a1a2e' } },
-    username: { fontWeight: 'bold', paddingLeft: '15px', color: '#e94560', fontSize: '1.1rem' },
-    manageBtn: { background: '#00d4ff', color: 'black', border: 'none', padding: '10px 20px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', textTransform: 'uppercase', fontSize: '0.8rem', boxShadow: '0 4px 15px rgba(0, 212, 255, 0.3)' },
+    useEffect(() => {
+        let cancelled = false;
+        api.loadPlayerSave(player.id)
+            .then((raw) => {
+                if (cancelled) return;
+                setState(migrateSave(raw));
+                setStatus("ready");
+            })
+            .catch(() => {
+                if (!cancelled) setStatus("error");
+            });
+        return () => {
+            cancelled = true;
+        };
+    }, [player.id]);
 
-    // Panneau de contrôle
-    backBtn: { background: '#333', color: 'white', border: '1px solid #555', padding: '10px 20px', borderRadius: '8px', cursor: 'pointer', marginBottom: '20px', fontWeight: 'bold' },
-    panelGrid: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' },
-    card: { background: '#16213e', padding: '25px', borderRadius: '12px', borderTop: '4px solid #e94560', boxShadow: '0 8px 30px rgba(0,0,0,0.4)' },
-    cardTitle: { marginTop: 0, marginBottom: '20px', color: '#e94560', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '10px' },
-    label: { display: 'block', color: '#a29bfe', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '8px', marginTop: '15px', fontWeight: 'bold' },
-    inputFull: { width: '100%', background: '#0f3460', color: 'white', border: '1px solid #4CAF50', padding: '12px', borderRadius: '8px', fontSize: '1.1rem', outline: 'none', boxSizing: 'border-box', marginBottom: '10px' },
+    const save = async () => {
+        setBusy(true);
+        try {
+            await api.savePlayer({
+                user_id: player.id,
+                score: state.score,
+                save_data: serializeSave(state),
+            });
+            // Modifier son propre compte demande de recharger la partie en
+            // cours : sinon l'autosave du jeu réécrit l'ancien état par-dessus.
+            if (isSelf) await resyncFromServer();
+            toast(`Partie de ${player.username} enregistrée.`, "success");
+            onSaved();
+        } catch (err) {
+            toast(err.message || "Enregistrement impossible.", "error");
+        } finally {
+            setBusy(false);
+        }
+    };
 
-    btnGroup: { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(80px, 1fr))', gap: '8px', marginBottom: '10px' },
-    addBtn: { background: 'rgba(76, 175, 80, 0.1)', border: '1px solid #4CAF50', color: '#4CAF50', padding: '8px', borderRadius: '6px', cursor: 'pointer', fontWeight: 'bold', transition: '0.2s' },
+    const toggleCompanion = (id, checked) =>
+        setState((prev) => {
+            const owned = { ...prev.owned };
+            if (checked) owned[id] = 1;
+            else delete owned[id];
+            // On repasse par le moteur pour que la production suive.
+            return migrateSave({ ...serializeSave({ ...prev, owned }), score: prev.score });
+        });
 
-    companionList: { display: 'flex', flexDirection: 'column', gap: '15px' },
-    checkLabel: { display: 'flex', alignItems: 'center', fontSize: '1.1rem', cursor: 'pointer', background: 'rgba(255,255,255,0.05)', padding: '10px', borderRadius: '8px' },
-    checkbox: { transform: 'scale(1.5)', marginRight: '15px', accentColor: '#4CAF50' },
+    if (status === "loading") return <p className="is-hint">Chargement de la partie…</p>;
+    if (status === "error") return <div className="is-error">Partie illisible.</div>;
 
-    bigSaveBtn: { background: 'linear-gradient(45deg, #4CAF50, #00d4ff)', color: 'black', border: 'none', padding: '20px 40px', borderRadius: '12px', cursor: 'pointer', fontWeight: '900', fontSize: '1.2rem', boxShadow: '0 10px 30px rgba(76, 175, 80, 0.4)', textTransform: 'uppercase', letterSpacing: '2px' }
-};
+    return (
+        <>
+            <button type="button" className="is-btn is-btn--ghost is-btn--sm" onClick={onBack}>
+                ← Retour à la liste
+            </button>
+
+            <h1 className="is-title" style={{ marginTop: 18 }}>
+                {player.username}
+            </h1>
+            <p className="is-subtitle">
+                Les valeurs sont appliquées via le moteur du jeu : l&apos;échelle des prix reste
+                cohérente avec la puissance accordée.
+                {isSelf && " C'est ton propre compte : ta partie en cours sera rechargée après l'enregistrement."}
+            </p>
+
+            <h2 className="is-section-title">Ressources</h2>
+            <BigNumberField
+                id="is-admin-score"
+                label="Score"
+                value={state.score}
+                disabled={busy}
+                onChange={(v) => setState((p) => ({ ...p, score: clampScore(v) }))}
+            />
+            <BigNumberField
+                id="is-admin-perclick"
+                label="Points par clic"
+                value={state.perClick}
+                disabled={busy}
+                onChange={(v) => setState((p) => withPerClick(p, v))}
+            />
+            <BigNumberField
+                id="is-admin-persecond"
+                label="Points par seconde"
+                value={state.perSecond}
+                disabled={busy}
+                onChange={(v) => setState((p) => withPerSecond(p, v))}
+            />
+
+            <div className="is-field">
+                <label className="is-label" htmlFor="is-admin-rebirth">
+                    Ascensions
+                </label>
+                <input
+                    id="is-admin-rebirth"
+                    type="number"
+                    min={0}
+                    max={6}
+                    value={state.rebirthCount}
+                    disabled={busy}
+                    onChange={(e) => {
+                        const n = Math.max(0, Math.min(6, Number(e.target.value) || 0));
+                        setState((p) => migrateSave({ ...serializeSave({ ...p, rebirthCount: n }), score: p.score }));
+                    }}
+                />
+            </div>
+
+            <h2 className="is-section-title">Compagnons</h2>
+            <div className="is-companions">
+                {COMPANIONS.map((c) => (
+                    <label
+                        key={c.id}
+                        className={`is-upgrade${state.owned[c.id] ? " is-companion--owned" : ""}`}
+                        style={{ cursor: "pointer" }}
+                    >
+                        <input
+                            type="checkbox"
+                            checked={Boolean(state.owned[c.id])}
+                            disabled={busy}
+                            onChange={(e) => toggleCompanion(c.id, e.target.checked)}
+                            style={{ width: 18, height: 18, flex: "none", accentColor: "var(--is-accent)" }}
+                        />
+                        <span className="is-upgrade-body">
+                            <span className="is-upgrade-name">
+                                {c.icon} {c.label}
+                            </span>
+                        </span>
+                    </label>
+                ))}
+            </div>
+
+            <button
+                type="button"
+                className="is-btn is-btn--primary is-btn--block"
+                onClick={save}
+                disabled={busy}
+                style={{ marginTop: 26 }}
+            >
+                {busy ? "Enregistrement…" : "Enregistrer la partie"}
+            </button>
+        </>
+    );
+}
+
+export default function AdminPanel() {
+    const user = useStore((s) => s.user);
+    const [players, setPlayers] = useState([]);
+    const [status, setStatus] = useState("loading");
+    const [selected, setSelected] = useState(null);
+
+    const load = useCallback(
+        () =>
+            api
+                .fetchPlayers()
+                .then((data) => {
+                    setPlayers(Array.isArray(data) ? data : []);
+                    setStatus("ready");
+                })
+                .catch(() => setStatus("error")),
+        []
+    );
+
+    const isAdmin = user?.role === "admin";
+    useEffect(() => {
+        if (isAdmin) load();
+    }, [isAdmin, load]);
+
+    // Garde d'affichage uniquement : /api/ideastorm/admin/* revérifie le rôle
+    // côté serveur à chaque requête.
+    if (user && user.role !== "admin") return <Navigate to="/" replace />;
+
+    return (
+        <main className="is-page">
+            <div className="is-card is-card--full">
+                {selected ? (
+                    <PlayerEditor
+                        player={selected}
+                        onBack={() => setSelected(null)}
+                        onSaved={() => {
+                            setSelected(null);
+                            load();
+                        }}
+                    />
+                ) : (
+                    <>
+                        <h1 className="is-title">Administration</h1>
+                        <p className="is-subtitle">
+                            {players.length} compte{players.length > 1 ? "s" : ""} enregistré
+                            {players.length > 1 ? "s" : ""}.
+                        </p>
+
+                        {status === "loading" && <p className="is-hint">Chargement…</p>}
+                        {status === "error" && <div className="is-error">Liste indisponible.</div>}
+
+                        {status === "ready" && (
+                            <div className="is-table-wrap">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Joueur</th>
+                                            <th className="is-num">Score</th>
+                                            <th className="is-mid">Ascensions</th>
+                                            <th className="is-mid">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {players.map((p) => (
+                                            <tr key={p.id}>
+                                                <td>{p.username}</td>
+                                                <td className="is-num">{formatNumber(p.score)}</td>
+                                                <td className="is-mid">
+                                                    <span className="is-badge">✦ {p.rebirth_count}</span>
+                                                </td>
+                                                <td className="is-mid">
+                                                    <button
+                                                        type="button"
+                                                        className="is-btn is-btn--sm"
+                                                        onClick={() => setSelected(p)}
+                                                    >
+                                                        Modifier
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        )}
+                    </>
+                )}
+            </div>
+        </main>
+    );
+}

@@ -1,112 +1,99 @@
-import React, { useEffect, useState } from "react";
-import { formatNumber } from "../utils/format";
+import React, { useCallback, useEffect, useState } from "react";
 
-// 🟢 CORRECTION 1 : L'URL exacte pointant vers le dossier dist/
-const API_URL = "/api/ideastorm";
+import useStore from "../store/useStore.js";
+import { fetchLeaderboard } from "../utils/api.js";
+import { formatNumber } from "../utils/format.js";
+
+const REFRESH_MS = 15000;
 
 export default function Leaderboard() {
+    const username = useStore((s) => s.user?.username);
     const [players, setPlayers] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [status, setStatus] = useState("loading");
+
+    // Chaîne de promesses plutôt qu'async/await : les mises à jour d'état
+    // partent ainsi d'un callback, jamais du corps de l'effet.
+    const load = useCallback(
+        (signal) =>
+            fetchLeaderboard()
+                .then((data) => {
+                    if (signal.aborted) return;
+                    setPlayers(Array.isArray(data) ? data : []);
+                    setStatus("ready");
+                })
+                .catch(() => {
+                    if (!signal.aborted) setStatus("error");
+                }),
+        []
+    );
 
     useEffect(() => {
-        const fetchLeaderboard = async () => {
-            try {
-                // 🟢 CORRECTION 2 : L'action dans api.php est "get_score", pas "leaderboard"
-                const res = await fetch(`${API_URL}/leaderboard`);
-                if (!res.ok) throw new Error("Erreur réseau");
-
-                const data = await res.json();
-
-                // Sécurité : on s'assure que data est bien un tableau avant de faire un .map
-                if (Array.isArray(data)) {
-                    const rankedData = data.map((player, index) => ({
-                        ...player,
-                        rank: index + 1
-                    }));
-                    setPlayers(rankedData);
-                } else {
-                    setPlayers([]);
-                }
-            } catch (error) {
-                console.error("Erreur leaderboard:", error);
-            } finally {
-                setLoading(false);
-            }
+        // AbortController plutôt qu'un simple clearInterval : une requête déjà
+        // partie ne doit pas écrire dans un composant démonté.
+        const controller = new AbortController();
+        load(controller.signal);
+        const timer = setInterval(() => load(controller.signal), REFRESH_MS);
+        return () => {
+            controller.abort();
+            clearInterval(timer);
         };
-
-        fetchLeaderboard();
-
-        // Rafraîchissement automatique toutes les 10 secondes
-        const interval = setInterval(fetchLeaderboard, 10000);
-        return () => clearInterval(interval);
-    }, []);
+    }, [load]);
 
     return (
-        <div className="page-full bg-leaderboard">
-            <div className="game-card" style={{ maxWidth: '850px', width: '95%' }}>
-                <h1 style={{ color: '#0984e3', marginBottom: '20px', textAlign: 'center' }}>
-                    🏆 Classement des Légendes
-                </h1>
+        <main className="is-page">
+            <div className="is-card is-card--wide">
+                <h1 className="is-title">Classement</h1>
+                <p className="is-subtitle">
+                    Les cinquante meilleures parties, triées par ascension puis par score.
+                    Actualisé toutes les {REFRESH_MS / 1000} secondes.
+                </p>
 
-                {loading ? (
-                    <div style={{ padding: '20px', textAlign: 'center' }}>Chargement... ⏳</div>
-                ) : (
-                    <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '10px' }}>
+                {status === "loading" && <p className="is-hint">Chargement…</p>}
+                {status === "error" && (
+                    <div className="is-error">Le classement n&apos;a pas pu être chargé.</div>
+                )}
+
+                {status === "ready" && players.length === 0 && (
+                    <p className="is-hint">Aucune partie enregistrée pour l&apos;instant.</p>
+                )}
+
+                {status === "ready" && players.length > 0 && (
+                    <div className="is-table-wrap">
+                        <table>
                             <thead>
-                            <tr style={{ background: '#74b9ff', color: 'white' }}>
-                                <th style={{ padding: '15px', textAlign: 'center' }}>#</th>
-                                <th style={{ padding: '15px', textAlign: 'left' }}>Joueur</th>
-                                <th style={{ padding: '15px', textAlign: 'center' }}>🔥 Rebirths</th>
-                                <th style={{ padding: '15px', textAlign: 'right' }}>Score</th>
-                            </tr>
+                                <tr>
+                                    <th className="is-mid">#</th>
+                                    <th>Joueur</th>
+                                    <th className="is-mid">Ascensions</th>
+                                    <th className="is-num">Score</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            {players.map((player) => {
-                                let rankBadge = <b>#{player.rank}</b>;
-                                let rowStyle = { borderBottom: '1px solid #eee', background: 'white' };
-
-                                if (player.rank === 1) rankBadge = "🥇";
-                                if (player.rank === 2) rankBadge = "🥈";
-                                if (player.rank === 3) rankBadge = "🥉";
-
-                                return (
-                                    <tr key={player.rank} style={rowStyle}>
-                                        <td style={{ padding: '12px', textAlign: 'center', fontSize: '1.2rem' }}>
-                                            {rankBadge}
-                                        </td>
-
-                                        <td style={{ padding: '12px', fontWeight: '600', color: 'black' }}>
-                                            {player.username || "Anonyme"}
-                                        </td>
-
-                                        {/* COLONNE REBIRTH AVEC BADGE */}
-                                        <td style={{ padding: '12px', textAlign: 'center' }}>
-                                            <div style={{
-                                                display: 'inline-block',
-                                                background: 'linear-gradient(45deg, #2d3436, #000)',
-                                                color: '#fdcb6e',
-                                                padding: '4px 12px',
-                                                borderRadius: '15px',
-                                                fontSize: '0.85rem',
-                                                fontWeight: 'bold',
-                                                border: '1px solid #fdcb6e'
-                                            }}>
-                                                ★ {player.rebirth_count || 0}
-                                            </div>
-                                        </td>
-
-                                        <td style={{ padding: '12px', textAlign: 'right', color: '#0984e3', fontWeight: 'bold' }}>
-                                            {formatNumber(player.score)}
-                                        </td>
-                                    </tr>
-                                );
-                            })}
+                                {players.map((player, index) => {
+                                    const rank = index + 1;
+                                    return (
+                                        <tr
+                                            key={player.username}
+                                            className={player.username === username ? "is-row-me" : undefined}
+                                        >
+                                            <td className="is-mid">
+                                                <span className={`is-rank${rank <= 3 ? ` is-rank--${rank}` : ""}`}>
+                                                    {rank}
+                                                </span>
+                                            </td>
+                                            <td>{player.username}</td>
+                                            <td className="is-mid">
+                                                <span className="is-badge">✦ {player.rebirth_count ?? 0}</span>
+                                            </td>
+                                            <td className="is-num">{formatNumber(player.score)}</td>
+                                        </tr>
+                                    );
+                                })}
                             </tbody>
                         </table>
                     </div>
                 )}
             </div>
-        </div>
+        </main>
     );
 }
